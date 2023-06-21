@@ -4,9 +4,12 @@
   "description": "��#\u0000 \u0000a\u0000p\u0000d\u0000e\u0000v\u0000\r\u0000 \u0000#\u0000 \u0000a\u0000p\u0000d\u0000e\u0000v\u0000\r\u0000 \u0000#\u0000 \u0000a\u0000p\u0000d\u0000e\u0000v\u0000\r\u0000 \u0000#\u0000 \u0000a\u0000p\u0000d\u0000e\u0000v\u0000\r\u0000 \u0000# apdev",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server/index.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
