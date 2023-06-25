@@ -8,13 +8,45 @@
 }
 
 body{
-    background: rgb(94,252,232);
-    background: linear-gradient(90deg, rgba(94,252,232,1) 0%, rgba(115,110,254,1) 100%);
+    background-image: url("./warehouse.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.background-container::after {
+    content: "";
+    background-image: url("./warehouse.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: grayscale(120%);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
 
 .wrapper{
     display: flex;
     position: relative;
+    
+}
+
+.bg-image{
+    background-image: url("./warehouse.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .wrapper .sidebar{
@@ -65,7 +97,6 @@ body{
 
 
 .wrapper .login-box h2{
-    font-family: 'Roboto';
     color:#ffffff;
     padding-top: 10%;
     padding-bottom: 20px;
@@ -81,8 +112,7 @@ body{
 
 .wrapper .login-box .text-field::placeholder{
     position: absolute;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 12.5px;
 }
 
 .wrapper .login-box .action-confirm{
@@ -97,6 +127,10 @@ body{
     font-weight: bold;
     font-size: 20px;
     color: white;
+}
+
+.text-10{
+    margin-bottom: 10px;
 }
 
 .text-10 a{
