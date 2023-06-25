@@ -8,12 +8,12 @@
 }
 
 body{
-    background-image: url("./warehouse.jpg");
+    background: linear-gradient(135deg, #72EDF2 0%, #6b6ba2 100%);
     background-size: cover;
     background-repeat: no-repeat;
 }
 
-.background-container {
+/* .background-container {
     position: fixed;
     top: 0;
     left: 0;
@@ -35,26 +35,19 @@ body{
     top: 0;
     left: 0;
     z-index: -1;
-}
+} */
 
 .wrapper{
     display: flex;
     position: relative;
     
 }
-
-.bg-image{
-    background-image: url("./warehouse.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
 .wrapper .sidebar{
     position: fixed;
     width: 200px;
     height: 100%;
     background: #3376A7;
-    padding: 30px 0
+    padding: 30px 0;
 }
 
 .wrapper .sidebar img{
@@ -117,7 +110,7 @@ body{
 
 .wrapper .login-box .action-confirm{
     background-color: var(--primary-color, #23A6F0);
-    border-color: var(--primary-color, #23A6F0);;
+    border-color: white;
     border-radius: 40px;
     width: 130px;
     height: 40px;
