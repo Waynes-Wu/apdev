@@ -12,7 +12,9 @@ body{
     background-size: cover;
     background-attachment: fixed;
 }
-
+.dis-block{
+    display:inline-block;
+}
 /* .background-container {
     position: fixed;
     top: 0;
@@ -43,7 +45,7 @@ body{
     
 }
 .wrapper .sidebar{
-    position: fixed;
+    /* position: fixed; */
     width: 200px;
     height: 100%;
     background: #3376A7;
@@ -151,4 +153,16 @@ body{
     .wrapper .sidebar ul li{
         text-align: center;
     }
+}
+.wrapper{
+    display: flex;
+    height: 100vh;
+    justify-content: space-between;
+}
+.sidebar{
+    flex: 0 0 200px;
+}
+.content-area{
+    flex: 1;
+    height: 100%;
 }
