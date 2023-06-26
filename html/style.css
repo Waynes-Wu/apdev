@@ -186,7 +186,7 @@ body{
 
 .wrapper .login-box .text-field::placeholder{
     position: absolute;
-    padding-top: 12.5px;
+    padding-top: 7px;
 }
 
 .wrapper .login-box .action-confirm{
