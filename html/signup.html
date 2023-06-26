@@ -1,28 +1,63 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Sign Up</title>
-        <link href="./style.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">    </head>
-    <body>
-        <div class="wrapper">
-            <div class="sidebar">
-                <a href="index.html"><img src="./logo.png"></a>
-                    <ul>
-                        <li><a href="signup.html"><i class="fa fa-user"></i> Sign up</a></li>
-                        <li><a href="login.html"><i class="fa fa-shield"></i> Log In</a></li>
-                        <li><a href="archive.html"><i class="fa fa-list"></i> Archive List</a></li>
-                        <li><a href="upload.html"><i class="fa fa-upload"></i> Upload</a></li>
-                        <li><a href="contactus.html"><i class="fa fa-phone"></i> Contact Us</a></li>
-                        <li><a href="about.html"><i class="fa fa-exclamation-circle"></i> About Us</a></li>
-                    </ul>
-            </div>
+
+<head>
+    <meta charset="utf-8">
+    <title>Sign Up</title>
+    <link href="./style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="sidebar">
+            <a href="index.html"><img src="./logo.png"></a>
+            <ul>
+                <li><a href="signup.html"><i class="fa fa-user"></i> Sign up</a></li>
+                <li><a href="login.html"><i class="fa fa-shield"></i> Log In</a></li>
+                <li><a href="archive.html"><i class="fa fa-list"></i> Archive List</a></li>
+                <li><a href="upload.html"><i class="fa fa-upload"></i> Upload</a></li>
+                <li><a href="contactus.html"><i class="fa fa-phone"></i> Contact Us</a></li>
+                <li><a href="about.html"><i class="fa fa-exclamation-circle"></i> About Us</a></li>
+            </ul>
         </div>
         <div class="login-box">
-            <div class="login-menu">
-                <>
-            </div>
+            <center><h2>Log In</h2>
+            <!-- <input class="text-field" type="text" placeholder="&#xF007; Username" style="font-family: Roboto, FontAwesome;"><br> -->
+            <!-- <input id="id_password" class="text-field" type="password" placeholder="&#xF023; Password" style="font-family: Roboto, FontAwesome;"> -->
+
+            <form action="">
+                <div class="input-container">
+                    <i class="fa fa-envelope"></i>
+                    <input type="email" id="email" placeholder="Email" required class="text-field">
+                </div>
+
+                <div class="input-container">
+                    <i class="fa fa-user"></i>
+                    <input type="text" id="username" placeholder="Username" required class="text-field"> 
+                </div>
+                <div class="input-container">
+                    <i class="fa fa-lock"></i>
+                    <input type="password" id="password" placeholder="Password" required class="text-field">
+                    <i class="fa fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer; color:black"></i>
+                </div>
+                <div class="input-container">
+                    <i class="fa fa-lock"></i>
+                    <input type="password" id="confirm-password" placeholder="Confirm Password" required class="text-field">
+                </div>
+            </form>
+                                
+            <p class="text-10">Forgot Password? Click <a href="#">Here</a> <br> Don't have an account? Sign Up <a href="#">Here</a></p>
+            <br><button type="button" class="action-confirm">Confirm!</button>
+        
+        </center>
+
         </div>
-    </body>
+
+</body>
+<style>
+    .log-in{
+
+    }
+</style>
 </html>
