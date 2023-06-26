@@ -13,7 +13,63 @@ body{
     background-attachment: fixed;
 }
 .dis-block{
-    display:inline-block;
+  
+    font-size: 32px;
+    font-weight: bolder;
+    border-radius: 8px; 
+    align-items: center;
+    justify-content: center;
+
+}
+
+.option-logo {
+    height: 136px;
+    width: 145px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.option-box {
+    padding-top: 2%;
+    padding-left: 2%;
+    display: inline-block;
+    width: 521px;
+    height: 250 px;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    margin-left: 100px;
+    background-image: linear-gradient(135deg, #72EDF2 0%, #6b6ba2 100%);
+    box-shadow: 2px 3px black;
+   
+}
+
+.edit-archive{
+    margin-left: 10px;
+}
+
+.archive-list{
+    margin-left: 10px;
+}
+
+
+.action-confirm{
+    background-color: var(--primary-color, #23A6F0);
+    border-radius: 40px;
+    border-color: white;
+    width: 130px;
+    height: 40px;
+    margin-bottom: 5%;
+    text-align: center;
+    font-family: "Work Sans";
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    position: relative;
+    left: 350px;
 }
 /* .background-container {
     position: fixed;
