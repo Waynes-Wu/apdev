@@ -23,6 +23,11 @@ body{
 
 }
 
+.option-box{
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
 .option-logo {
     height: 246px;
     width: 265px;
@@ -34,9 +39,13 @@ body{
     margin-left: 65px;
 }
 
-.option-logo i{
-    font-size: 10em;
+.option-logo a{
+    color: black;
     position: absolute;
+}
+
+.option-logo a i{
+    font-size: 10em;
 }
 
 #edit{
@@ -230,6 +239,12 @@ body{
 }
 
 
+.h2-10{
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+
 /*Responsive Navbar*/
 @media (max-width: 400px){
     .wrapper{
@@ -251,14 +266,12 @@ body{
     }
 }
 
-.wrapper{
-    display: flex;
-    height: 100vh;
-}
 .sidebar{
     flex: 0 0 200px;
 }
-.content-area{
-    flex: 1;
-    height: 100%;
+
+.wrapper .content-area{
+    width: 100%;
+    margin-left: 200px;
 }
+
