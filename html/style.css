@@ -250,7 +250,9 @@ body{
     width: 100%;
     margin-left: 200px;
 }
-
+.description{
+    margin: 30px;
+}
 
 .contact-box{
     display: block;
