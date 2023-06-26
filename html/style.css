@@ -17,27 +17,23 @@ body{
 
 .dis-block{
 
+    display: flex;
     font-size: 32px;
     font-weight: bolder;
     border-radius: 8px; 
     align-items: center;
-    justify-content: center;
-    /* display: flex; */
+    justify-content: space-evenly;
+    flex-wrap: wrap;
 
 }
 
 
 .option-box{
     margin-bottom: 20px;
-    padding: 20px;
     display: inline-block;
-    width: 780px;
-    /* height: 480px; */
+    width: 800px;
+    height: 286px;
     border-radius: 8px;
-    /* position: relative; */
-    /* overflow: hidden; */
-    margin-left: 20.5%;
-    margin-right: 3%;
     background-image: linear-gradient(135deg, #72EDF2 0%, #6b6ba2 100%);
     box-shadow: 2px 3px black;
 
@@ -51,7 +47,9 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+
     margin-left: 65px;
+    margin-bottom: 20px;
 }
 
 .option-logo a{
@@ -70,8 +68,8 @@ body{
 
 .dis-block p{
     margin-left: 5.7em;
-    margin-top: -2.9em;
-    position: absolute;
+    margin-top: -3em;
+    position: relative;
     color: white;
     font-size: 5.3em;
 }
@@ -266,8 +264,6 @@ body{
 }
 
 .wrapper .content-area{
-    /* width: 100%;
-    margin-left: 200px; */
     flex: 1;
     height: 100%;
 }
