@@ -6,12 +6,13 @@
     padding: 0;
     font-family: Work Sans;
 }
-    
+
 body{
     background-image: linear-gradient(135deg, #72EDF2 0%, #6b6ba2 100%);
     background-size: cover;
     background-attachment: fixed;
 }
+
 .dis-block{
   
     font-size: 32px;
@@ -22,7 +23,7 @@ body{
 
 }
 
-.option-logo {
+/* .option-logo {
     height: 136px;
     width: 145px;
     background-color: #bbb;
@@ -30,21 +31,37 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-}
+} */
 
-.option-box {
-    padding-top: 2%;
-    padding-left: 2%;
+.option-box { 
     display: inline-block;
-    width: 521px;
-    height: 250 px;
+    width: 780px;
+    height: 480px;
     border-radius: 8px;
-    position: relative;
+    /* position: relative; */
     overflow: hidden;
-    margin-left: 100px;
+    margin-left: 19.5%;
+    margin-right: 3%;
     background-image: linear-gradient(135deg, #72EDF2 0%, #6b6ba2 100%);
     box-shadow: 2px 3px black;
    
+}
+
+.dis-block p{
+    position: absolute;
+    color: white;
+    font-size: 60px;
+}
+
+.dis-block i{
+    position: relative;
+    font-size: 35em;
+    opacity: 0.2;
+    /* background-color: red; */
+}
+
+#edit{
+    margin-left: 15px;
 }
 
 .edit-archive{
@@ -55,8 +72,11 @@ body{
     margin-left: 10px;
 }
 
+.dis-block .action-confirm{
+    left: 350px;
+}
 
-.option-button{
+.action-confirm{
     background-color: var(--primary-color, #23A6F0);
     border-radius: 40px;
     border-color: white;
@@ -69,8 +89,8 @@ body{
     font-size: 20px;
     color: white;
     position: relative;
-    left: 350px;
 }
+
 /* .background-container {
     position: fixed;
     top: 0;
@@ -101,7 +121,7 @@ body{
     
 }
 .wrapper .sidebar{
-    /* position: fixed; */
+    position: fixed;
     width: 200px;
     height: 100%;
     background: #3376A7;
@@ -135,44 +155,45 @@ body{
 }
 
 .wrapper .login-box{
+    padding-top: 2%;
     border-radius: 25px;
-    width: 60rem;
-    height: 35rem;
-    margin-top: 10%;
-    margin-left: 30%;
-    margin-right: 15%;
-    margin-bottom: 10%;
+    width: 38rem;
+    height: 38rem;
+    margin-top: 12.4%;
+    margin-left: 42.7%;
     background: linear-gradient(135deg, #72EDF2 0%, #6b6ba2 100%);
     color: white;
+    text-align: center;
+    box-shadow: 2px 3px black;
 }
 
-
-.wrapper .login-box h2{
+.wrapper .login-box h1{
     color:#ffffff;
     padding-top: 10%;
-    padding-bottom: 20px;
+    padding-bottom: 50px;
 }
 
 .wrapper .login-box .text-field{
     border-radius: 40px;
-    width: 300px;
-    height: 40px;
+    width: 480px;
+    height: 50px;
     padding-left: 10px;
     margin-bottom: 30px;
-    font-size: 20px;
+    font-size: 17px;
 }
+
 
 .wrapper .login-box .text-field::placeholder{
     position: absolute;
-    /* padding-top: 12.5px; */
+    padding-top: 12.5px;
 }
 
 .wrapper .login-box .action-confirm{
     background-color: var(--primary-color, #23A6F0);
     border-color: white;
     border-radius: 40px;
-    width: 130px;
-    height: 40px;
+    width: 160px;
+    height: 45px;
     margin-bottom: 5%;
     text-align: center;
     font-family: "Work Sans";
@@ -183,6 +204,12 @@ body{
 
 .text-10{
     margin-bottom: 10px;
+    font-size: 16px;
+    text-align: center;
+}
+
+#extras{
+    text-align: left;
 }
 
 .text-10 a{
@@ -211,10 +238,10 @@ body{
         text-align: center;
     }
 }
+
 .wrapper{
     display: flex;
     height: 100vh;
-    justify-content: space-between;
 }
 .sidebar{
     flex: 0 0 200px;
