@@ -40,7 +40,7 @@
                     <a href="archive.html"><p>Access<br>Archive</p></a>
                 </button>
 
-                <button class="option-box" onclick="document.getElementById('qrscreen').style.display='block'">
+                <button class="option-box" onclick="document.getElementById('popup').style.display='block'">
                     <div class="option-logo">
                         <a href="#"><i class="fa fa-qrcode" id="qrcode"></i></a>
                     </div>
@@ -55,7 +55,7 @@
                 </button>
 
 
-                <button class="option-box">
+                <button class="option-box" onclick="vanishMessage()">
                     <div class="option-logo">
                         <a href="#"><i class="fa fa-calendar"></i></a>
                     </div>
@@ -69,20 +69,34 @@
         </div>
     </div>
     
-    <div id="qrscreen" class="bg">
+    <div id="popup" class="bg">
         <div class="popupimg">
             <img src="qrexample.PNG">
         </div>
     </div>
 
+    <div id="vanish">
+        <div class="daysremaining">
+            <br>
+            <h2 style="color: white;">27 Days Remaining</h2>
+        </div>
+    </div>
+
 </body>
 <script>
-    var bg = document.getElementById('qrscreen');
+    var bg = document.getElementById('popup');
     
     window.onclick = function(event) {
         if (event.target == bg) {
             bg.style.display = "none";
         }
     }
+
+    function vanishMessage(){
+        var van = document.getElementById('vanish');
+        van.className = "show";
+        setTimeout(function(){ van.className = van.className.replace("show", ""); }, 3000);
+    }
+
 </script>
 </html>
