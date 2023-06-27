@@ -21,14 +21,16 @@
         </div>
         <div class="content-area">
             <div class="description">
-                <center><p style="font-size: 40px; font-weight: bold;">Welcome to E-Tabi!</p>
-                <br>
-                <p style="font-size: 26px;">
-                    Feel free to nagivate or explore our website has to offer to storage unit owners and 
-                <br>
-                its shareholders. This website has a secure system for its users to record
-                <br>
-                and check their valuables along with other useful options</p>
+                <center>
+                    <p style="font-size: 40px; font-weight: bold;">Welcome to E-Tabi!</p>
+                    <br>
+                    <p style="font-size: 26px;">
+                        Feel free to nagivate or explore our website has to offer to storage unit owners and
+                        <br>
+                        its shareholders. This website has a secure system for its users to record
+                        <br>
+                        and check their valuables along with other useful options
+                    </p>
                 </center>
             </div>
 
@@ -37,7 +39,9 @@
                     <div class="option-logo">
                         <a href="archive.html"><i class="fa fa-pencil-square" id="edit"></i></a>
                     </div>
-                    <a href="archive.html"><p>Access<br>Archive</p></a>
+                    <a href="archive.html">
+                        <p>Access<br>Archive</p>
+                    </a>
                 </button>
 
                 <button class="option-box" onclick="document.getElementById('popup').style.display='block'">
@@ -46,8 +50,8 @@
                     </div>
                     <p id="qrword">Generate<br>QR Code</p>
                 </button>
-                
-                <button class="option-box" id="left">
+
+                <button class="option-box" id="left" onclick="document.querySelector('.bgbg').style.display='block'">
                     <div class="option-logo">
                         <a href="#"><i class="fa fa-clipboard"></i></a>
                     </div>
@@ -62,12 +66,14 @@
                     <p id="payment">Remaining<br>Lease Term</p>
                 </button>
             </div>
-            
-            </div>
-            
-            </div>
+
         </div>
+
     </div>
+    </div>
+    </div>
+
+    <div id="qrscreen" class="bg">
     
     <div id="popup" class="bg">
         <div class="popupimg">
@@ -90,6 +96,11 @@
         if (event.target == bg) {
             bg.style.display = "none";
         }
+
+        if (event.target == bgbg) {
+            bgbg.style.display = "none";
+        }
+
     }
 
     function vanishMessage(){
@@ -99,4 +110,5 @@
     }
 
 </script>
+
 </html>
