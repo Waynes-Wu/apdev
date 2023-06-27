@@ -376,7 +376,7 @@ h2.item-description{
 }
 
 
-#popup {
+#popup, .bgbg {
     display: none;
     position: fixed;
     z-index: 1;
