@@ -27,7 +27,22 @@
                     <p class="text-10">Don't have an account? Sign Up <a href="signup.html">Here</a></p>
                 </div>
             </div>
+            <script>
+                var togglePassword = document.getElementById("togglePassword");
+                var passwordInput = document.getElementById("id_password");
 
+                togglePassword.addEventListener("click", function() {
+                    if (passwordInput.type === "password") {
+                        passwordInput.type = "text";
+                        togglePassword.classList.remove("fa-eye");
+                        togglePassword.classList.add("fa-eye-slash");
+                    } else {
+                        passwordInput.type = "password";
+                        togglePassword.classList.remove("fa-eye-slash");
+                        togglePassword.classList.add("fa-eye");
+                    }
+                });
+            </script>
         </div>
     </body>
 </html>
