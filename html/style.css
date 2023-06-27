@@ -415,7 +415,7 @@ h2.item-description{
     border-radius: 25px;
     width: 17rem;
     height: 4rem;
-    margin-top: 2em;
+    margin-bottom: -1.5em;
     margin-left: 57em;
     background-color: var(--primary-color, #23A6F0);
     text-align: center;
