@@ -7,6 +7,10 @@
     font-family: Work Sans;
 }
 
+input{
+    font-family: Roboto, FontAwesome;
+}
+
 body{
     background-image: linear-gradient(135deg, #72EDF2 0%, #6b6ba2 100%);
     background-size: cover;

@@ -133,9 +133,7 @@ body{
 .content-area{
     flex:1;
     height: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 2.5%;
+
 }
 
 
@@ -148,7 +146,7 @@ body{
 }
 
 .image-container:hover {
-    transform: scale(1.1);
+    transform: scale(1);
 }
 
 .overlay{
@@ -163,10 +161,12 @@ body{
     height:0;
     transition: .5s ease;
     text-align: center;
+    padding: 0%;
+
 }
 
 .image-container:hover .overlay{
-    height: 50%;
+    height: 400px;
     color:white;
     width:100%;
     position: absolute;
@@ -174,7 +174,60 @@ body{
 }
 .image{
    /* display: block; */
-   max-width: 100%;
-   height: auto;
+   width: 100%;
+   height: 400px;
 }
 
+.item-num{
+    font-family: 'Roboto';
+    font-size: 23px;
+}
+
+.item-description{
+    font-family: 'Roboto';
+    font-size: 20px;
+}
+.items{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 1.5%;
+    margin: 2%;
+}
+
+.archive-header{
+    display: flex;
+    margin: auto;
+    margin-top: 2.5%;
+    background-image: linear-gradient(135deg, #72EDF2 0%, #6b6ba2 100%);
+    border-radius: 40px;
+    width: 900px;
+    height: 60px;
+}
+
+.archive-header input{
+    flex: 5;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 1.5%;
+    margin-bottom: 1.5%;
+    width: 200px;
+    height: 30px;
+    border-radius: 40px;
+    padding-left: 7px;
+
+}
+
+input{
+    font-family: Roboto, FontAwesome;
+}
+
+.archive-header .edit, .add, .remove{
+    flex: 1;
+    border-radius: 40px;
+    margin-top: 1.5%;
+    margin-bottom: 1.5%;
+    margin-left: 2%;
+    margin-right: 2%;
+    width: 70px;
+    height: 30px;
+}
