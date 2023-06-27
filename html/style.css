@@ -66,7 +66,8 @@ body{
     height: 250px;
     border-radius: 8px;
     overflow: hidden;
-    margin-left: 4%;
+    margin-left: 3.5%;
+    margin-right: 3.5%;
     margin-top: 3.3%;
     background-image: linear-gradient(135deg, #72EDF2 0%, #6b6ba2 100%);
     box-shadow: 2px 3px black;
@@ -416,7 +417,7 @@ h2.item-description{
     width: 17rem;
     height: 4rem;
     margin-top: 2em;
-    margin-left: 57em;
+    margin-left: 56.3em;
     background-color: var(--primary-color, #23A6F0);
     text-align: center;
     border-color: white;
