@@ -51,8 +51,8 @@ body{
 
 .option-box { 
     display: inline-block;
-    width: 630px;
-    height: 430px;
+    width: 580px;
+    height: 380px;
     border-radius: 8px;
     overflow: hidden;
     margin-left: 4%;
@@ -62,7 +62,7 @@ body{
 }
 
 #left{
-    margin-left: 22%;
+    margin-left: 23.5%;
 }
 
 .dis-block p{
