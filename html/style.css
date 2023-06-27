@@ -17,16 +17,18 @@ body{
     background-attachment: fixed;
 }
 
-/* .dis-block{
-    font-size: 32px;
-    font-weight: bolder;
-    border-radius: 8px; 
+.dis-block{
+    /* font-size: 32px; */
+    /* font-weight: bolder; */
+    /* border-radius: 8px;  */
+    display: flex;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
     justify-content: space-evenly;
     flex-wrap: wrap;
+    margin: auto;
 
-} */
+}
 
 
 .option-logo {
@@ -59,7 +61,7 @@ body{
 }
 
 .option-box { 
-    display: inline-block;
+    /* display: inline-block; */
     width: 480px;
     height: 250px;
     border-radius: 8px;
@@ -70,9 +72,9 @@ body{
     box-shadow: 2px 3px black;
 }
 
-#left{
+/* #left{
     margin-left: 18.5%;
-}
+} */
 
 .dis-block p{
     margin-left: 5.4em;
