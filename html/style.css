@@ -28,22 +28,25 @@ body{
 .option-box{
     margin-bottom: 20px;
     display: inline-block;
-    width: 430px;
-    height: 230px;
+    width: 800px;
+    height: 286px;
     border-radius: 8px;
     background-image: linear-gradient(135deg, #72EDF2 0%, #6b6ba2 100%);
     box-shadow: 2px 3px black;
+
 }
 
 .option-logo {
-    height: 126px;
-    width: 145px;
+    height: 246px;
+    width: 265px;
     background-color: #bbb;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 25px;
+
+    margin-left: 65px;
+    margin-bottom: 20px;
 }
 
 .option-logo a{
@@ -52,43 +55,29 @@ body{
 }
 
 .option-logo a i{
-    font-size: 5em;
+    font-size: 10em;
 }
 
-
-.option-box { 
-    display: inline-block;
-    width: 430px;
-    height: 230px;
-    border-radius: 8px;
-    /* position: relative; */
-    overflow: hidden;
-    margin-left: 20.5%;
-    margin-right: 3%;
-    background-image: linear-gradient(135deg, #72EDF2 0%, #6b6ba2 100%);
-    box-shadow: 2px 3px black;
-
+#edit{
+    font-size: 12em;
 }
 
-#archive{
-    margin-left: 37.15%;
-}
 
 .dis-block p{
-    margin-left: 5.15em;
-    margin-top: -2.85em;
-    position: absolute;
+    margin-left: 5.7em;
+    margin-top: -3em;
+    position: relative;
     color: white;
-    font-size: 3em;
+    font-size: 5.3em;
 }
 
 #transcript{
-    margin-left: 4.5em;
+    margin-left: 5.3em;
     margin-top: -2.8em;
 }
 
 #payment{
-    margin-left: 4.8em;
+    margin-left: 5.7em;
     margin-top: -2.8em;
 }
 
