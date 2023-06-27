@@ -376,7 +376,7 @@ h2.item-description{
 }
 
 
-#popup, .bgbg {
+#popup, .bgbg{
     display: none;
     position: fixed;
     z-index: 1;
@@ -386,7 +386,18 @@ h2.item-description{
     height: 100%; 
     background-color: black;
     background-color: rgba(0,0,0,0.4); 
-  }
+}
+
+.trans_popup {
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    font-size: 20px;
+    margin: 25% auto;
+}
 
 .bg .popupimg {
     margin-left: 44.5%;
@@ -458,16 +469,6 @@ h2.item-description{
     }
 }
 
-.trans_popup {
-    background-color: #ffffff;
-    border: 1px solid #dddddd;
-    border-radius: 5px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    font-size: 20px;
-    margin: 40% auto;
-}
 
 table {
     width: 100%;

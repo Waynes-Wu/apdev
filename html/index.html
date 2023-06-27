@@ -70,21 +70,19 @@
         </div>
 
     </div>
+
+    <div id="popup" class="bg">
+        <div class="popupimg">
+            <img src="qrexample.PNG">
+        </div>
     </div>
+    <div id="vanish">
+        <div class="daysremaining">
+            <br>
+            <h2 style="color: white;">27 Days Remaining</h2>
+        </div>
     </div>
 
-        <div id="popup" class="bg">
-            <div class="popupimg">
-                <img src="qrexample.PNG">
-            </div>
-        </div>
-        <div id="vanish">
-            <div class="daysremaining">
-                <br>
-                <h2 style="color: white;">27 Days Remaining</h2>
-            </div>
-        </div>
-    
 
     <!-- ! my div yaay -->
     <div class="bgbg">
@@ -145,10 +143,10 @@
 
     }
 
-    function vanishMessage(){
+    function vanishMessage() {
         var van = document.getElementById('vanish');
         van.className = "show";
-        setTimeout(function(){ van.className = van.className.replace("show", ""); }, 3000);
+        setTimeout(function () { van.className = van.className.replace("show", ""); }, 3000);
     }
 
 </script>
