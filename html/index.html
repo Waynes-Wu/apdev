@@ -40,12 +40,28 @@
                     <a href="archive.html"><p>Access<br>Archive</p></a>
                 </button>
 
-                <button class="option-box">
+                <button class="option-box" onclick="document.getElementById('qrscreen').style.display='block'">
                     <div class="option-logo">
                         <a href="#"><i class="fa fa-qrcode" id="qrcode"></i></a>
                     </div>
                     <p id="qrword">Generate<br>QR Code</p>
                 </button>
+
+                <div id="qrscreen" class="bg">
+                    <div class="popupimg">
+                        <img src="qrexample.PNG">
+                    </div>
+                </div>
+
+                <script>
+                    var bg = document.getElementById('qrscreen');
+                    
+                    window.onclick = function(event) {
+                        if (event.target == bg) {
+                            bg.style.display = "none";
+                        }
+                    }
+                </script>
 
                 <br>
 
@@ -59,9 +75,9 @@
 
                 <button class="option-box">
                     <div class="option-logo">
-                        <a href="#"><i class="fa fa-credit-card"></i></a>
+                        <a href="#"><i class="fa fa-calendar"></i></a>
                     </div>
-                    <p id="payment">Payment<br>Plan</p>
+                    <p id="payment">Remaining<br>Lease Term</p>
                 </button>
             </div>
             
