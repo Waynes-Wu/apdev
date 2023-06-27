@@ -10,23 +10,34 @@
             <div class="sidebar">
                 <a href="index.html"><img src="./logo.png"></a>
                     <ul>
-                        <li><a href="signup.html"><i class="fa fa-user"></i> Sign up</a></li>
-                        <li><a href="login.html"><i class="fa fa-shield"></i> Log In</a></li>
-                        <li><a href="archive.html"><i class="fa fa-list"></i> Archive List</a></li>
-                        <li><a href="upload.html"><i class="fa fa-upload"></i> Upload</a></li>
+                        <li><a href="login.html"><i class="fa fa-shield"></i> Sign Out</a></li>
                         <li><a href="contactus.html"><i class="fa fa-phone"></i> Contact Us</a></li>
                         <li><a href="about.html"><i class="fa fa-exclamation-circle"></i> About Us</a></li>
                     </ul>
             </div>
             <div class="content-area">
-                <div class="controls">
-                    <input type="search" class="search fa" placeholder="&#xf002; Search">
-                    <button type="button" class="option-button">Add</button>
-                    <button type="button" class="option-button">Remove</button>
-                    <button type="button" class="option-button">Edit</button>
-                </div>
-                <div class="results-area">
-                    
+                <div class="login-box">
+                    <center><h2 class="h2-10"><br>Upload Unit</h2>
+                    <form action="archive.html">
+                        <div class="input-container">
+                            <input type="text" id="unitname" placeholder="&#xf0f6; Unit Name" required class="text-field">
+                        </div>
+        <!--	f187  -->
+                        <div class="input-container">
+                            <!-- <i class="fa fa-user"></i> -->
+                            <input type="date" id="date-of-purchase" placeholder="&#xF007; Date of Storage" required class="text-field"> 
+                        </div>
+                        <div class="input-container">
+                            <!-- <i class="fa fa-user"></i> -->
+                            <input type="text" id="category" placeholder="&#xF187; Unit Category" required class="text-field"> 
+                        </div>
+                        <div class="input-container">
+                            <!-- <i class="fa fa-lock"></i> -->
+                            <input type="text" id="condition" placeholder="&#xf16b; Condition" required class="text-field">
+                        </div>
+                        <button type="submit" class="action-confirm" style="width: 200px;">Upload File</button>
+                    </form>
+                    </center>
                 </div>
             </div>
         </div>

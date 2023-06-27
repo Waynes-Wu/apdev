@@ -44,7 +44,7 @@
                     </a>
                 </button>
 
-                <button class="option-box" onclick="document.getElementById('qrscreen').style.display='block'">
+                <button class="option-box" onclick="document.getElementById('popup').style.display='block'">
                     <div class="option-logo">
                         <a href="#"><i class="fa fa-qrcode" id="qrcode"></i></a>
                     </div>
@@ -59,7 +59,7 @@
                 </button>
 
 
-                <button class="option-box">
+                <button class="option-box" onclick="vanishMessage()">
                     <div class="option-logo">
                         <a href="#"><i class="fa fa-calendar"></i></a>
                     </div>
@@ -74,61 +74,25 @@
     </div>
 
     <div id="qrscreen" class="bg">
+    
+    <div id="popup" class="bg">
         <div class="popupimg">
             <img src="qrexample.PNG">
         </div>
     </div>
 
-    <!-- ! my div yaay -->
-    <div class="bgbg">
-        <div class="trans_popup">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Date Added</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Item 1</td>
-                        <td>2023-05-01</td>
-                        <td>Edit</td>
-                    </tr>
-                    <tr>
-                        <td>Item 2</td>
-                        <td>2023-05-05</td>
-                        <td>Edit</td>
-                    </tr>
-                    <tr>
-                        <td>Item 3</td>
-                        <td>2023-05-10</td>
-                        <td>Upload</td>
-                    </tr>
-                    <tr>
-                        <td>Item 4</td>
-                        <td>2023-05-15</td>
-                        <td>Edit</td>
-                    </tr>
-                    <tr>
-                        <td>Item 5</td>
-                        <td>2023-05-20</td>
-                        <td>Add</td>
-                    </tr>
-                </tbody>
-            </table>
+    <div id="vanish">
+        <div class="daysremaining">
+            <br>
+            <h2 style="color: white;">27 Days Remaining</h2>
         </div>
     </div>
 
-
-
 </body>
 <script>
-    var bg = document.getElementById('qrscreen');
-    const bgbg = document.querySelector('.bgbg');
-
-    window.onclick = function (event) {
+    var bg = document.getElementById('popup');
+    
+    window.onclick = function(event) {
         if (event.target == bg) {
             bg.style.display = "none";
         }
@@ -139,7 +103,11 @@
 
     }
 
-
+    function vanishMessage(){
+        var van = document.getElementById('vanish');
+        van.className = "show";
+        setTimeout(function(){ van.className = van.className.replace("show", ""); }, 3000);
+    }
 
 </script>
 
