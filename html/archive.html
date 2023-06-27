@@ -75,7 +75,33 @@
                 </div>
             </div>
         </div>
+        <div class="popup-upload">
+            <div class="login-box">
+                <center><h2 class="h2-10"><br>Upload Unit<br><br></h2>
+                <form action="archive.html">
+                    <div class="input-container">
+                        <input type="text" id="unitname" placeholder="&#xf0f6; Unit Name" required class="text-field">
+                    </div>
+    <!--	f187  -->
+                    <div class="input-container">
+                        <!-- <i class="fa fa-user"></i> -->
+                        <input type="date" id="date-of-purchase" placeholder="&#xF007; Date of Storage" required class="text-field"> 
+                    </div>
+                    <div class="input-container">
+                        <!-- <i class="fa fa-user"></i> -->
+                        <input type="text" id="category" placeholder="&#xF187; Unit Category" required class="text-field"> 
+                    </div>
+                    <div class="input-container">
+                        <!-- <i class="fa fa-lock"></i> -->
+                        <input type="text" id="condition" placeholder="&#xf16b; Condition" required class="text-field">
+                    </div>
+                    <button type="submit" class="action-confirm" style="width: 200px;">Upload File</button>
+                </form>
+                </center>
+            </div>
+        </div>
     </div>
+    
     <script>
         const searchInput = document.querySelector('#searchInput');
         const items = document.querySelectorAll('.image-container');
@@ -90,6 +116,11 @@
                 name.includes(searchTerm) && (item.style.display = 'block') || (item.style.display = 'none');
             }
         });</script>
+        <script>
+            const button_add = document.querySelector('button.add');
+                const popup = document.querySelector('.popup-upload');
+                button_add.addEventListener('click', e => { (popup.style.display === 'none') ? (popup.style.display = 'block') : (popup.style.display = 'none');});
+        </script>
 </body>
 
 </html>
