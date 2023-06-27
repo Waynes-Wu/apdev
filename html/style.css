@@ -37,16 +37,14 @@ body{
 }
 
 .option-logo {
-    height: 246px;
-    width: 265px;
+    height: 135px;
+    width: 135px;
     background-color: #bbb;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    margin-left: 65px;
-    margin-bottom: 20px;
+    margin-left: 25px;
 }
 
 .option-logo a{
@@ -55,29 +53,46 @@ body{
 }
 
 .option-logo a i{
-    font-size: 10em;
+    font-size: 5em;
 }
 
 #edit{
-    font-size: 12em;
+    font-size: 6em;
 }
 
+.option-box { 
+    display: inline-block;
+    width: 430px;
+    height: 230px;
+    border-radius: 8px;
+    /* position: relative; */
+    overflow: hidden;
+    margin-left: 20.5%;
+    margin-right: 3%;
+    background-image: linear-gradient(135deg, #72EDF2 0%, #6b6ba2 100%);
+    box-shadow: 2px 3px black;
+   
+}
+
+#archive{
+    margin-left: 37.15%;
+}
 
 .dis-block p{
-    margin-left: 5.7em;
-    margin-top: -3em;
-    position: relative;
+    margin-left: 5.15em;
+    margin-top: -2.85em;
+    position: absolute;
     color: white;
-    font-size: 5.3em;
+    font-size: 3em;
 }
 
 #transcript{
-    margin-left: 5.3em;
+    margin-left: 4.5em;
     margin-top: -2.8em;
 }
 
 #payment{
-    margin-left: 5.7em;
+    margin-left: 4.8em;
     margin-top: -2.8em;
 }
 
