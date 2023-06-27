@@ -73,26 +73,68 @@
     </div>
     </div>
 
-    <div id="qrscreen" class="bg">
-    
-    <div id="popup" class="bg">
-        <div class="popupimg">
-            <img src="qrexample.PNG">
+        <div id="popup" class="bg">
+            <div class="popupimg">
+                <img src="qrexample.PNG">
+            </div>
         </div>
-    </div>
+        <div id="vanish">
+            <div class="daysremaining">
+                <br>
+                <h2 style="color: white;">27 Days Remaining</h2>
+            </div>
+        </div>
+    
 
-    <div id="vanish">
-        <div class="daysremaining">
-            <br>
-            <h2 style="color: white;">27 Days Remaining</h2>
+    <!-- ! my div yaay -->
+    <div class="bgbg">
+        <div class="trans_popup">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Date Added</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Item 1</td>
+                        <td>2023-05-01</td>
+                        <td>Edit</td>
+                    </tr>
+                    <tr>
+                        <td>Item 2</td>
+                        <td>2023-05-05</td>
+                        <td>Edit</td>
+                    </tr>
+                    <tr>
+                        <td>Item 3</td>
+                        <td>2023-05-10</td>
+                        <td>Upload</td>
+                    </tr>
+                    <tr>
+                        <td>Item 4</td>
+                        <td>2023-05-15</td>
+                        <td>Edit</td>
+                    </tr>
+                    <tr>
+                        <td>Item 5</td>
+                        <td>2023-05-20</td>
+                        <td>Add</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
 </body>
+
 <script>
     var bg = document.getElementById('popup');
-    
-    window.onclick = function(event) {
+    const bgbg = document.querySelector('.bgbg');
+
+    window.onclick = function (event) {
         if (event.target == bg) {
             bg.style.display = "none";
         }
