@@ -46,25 +46,7 @@
                     </div>
                     <p id="qrword">Generate<br>QR Code</p>
                 </button>
-
-                <div id="qrscreen" class="bg">
-                    <div class="popupimg">
-                        <img src="qrexample.PNG">
-                    </div>
-                </div>
-
-                <script>
-                    var bg = document.getElementById('qrscreen');
-                    
-                    window.onclick = function(event) {
-                        if (event.target == bg) {
-                            bg.style.display = "none";
-                        }
-                    }
-                </script>
-
-                <br>
-
+                
                 <button class="option-box" id="left">
                     <div class="option-logo">
                         <a href="#"><i class="fa fa-clipboard"></i></a>
@@ -86,6 +68,21 @@
             </div>
         </div>
     </div>
-</body>
+    
+    <div id="qrscreen" class="bg">
+        <div class="popupimg">
+            <img src="qrexample.PNG">
+        </div>
+    </div>
 
+</body>
+<script>
+    var bg = document.getElementById('qrscreen');
+    
+    window.onclick = function(event) {
+        if (event.target == bg) {
+            bg.style.display = "none";
+        }
+    }
+</script>
 </html>
