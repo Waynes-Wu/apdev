@@ -133,19 +133,16 @@ body{
 .content-area{
     flex:1;
     height: 100%;
+    display: grid;
+    grid-template-columns: auto auto auto;
 }
-
-
-.warehouse{
-    width: 950px;
-}
-
 
 
 .image-container{
     display: inline-block;
     position: relative;
     width:300px;
+    height: 300px;
     margin-top: 2.85%;
     margin-left: 20%;
     transition: transform 0.3s ease-in-out;
@@ -178,7 +175,7 @@ body{
 }
 .image{
    display: block;
-   width: 100%;
-   height:50%;
+   max-width: 100%;
+   height: auto;
 }
 
