@@ -49,20 +49,25 @@ body{
     font-size: 8em;
 }
 
+#qrcode{
+    font-size: 8.5em;
+    margin-top: 10.5%;
+}
+
 .option-box { 
     display: inline-block;
-    width: 580px;
-    height: 380px;
+    width: 480px;
+    height: 250px;
     border-radius: 8px;
     overflow: hidden;
     margin-left: 4%;
-    margin-top: 2.5%;
+    margin-top: 3.3%;
     background-image: linear-gradient(135deg, #72EDF2 0%, #6b6ba2 100%);
     box-shadow: 2px 3px black;
 }
 
 #left{
-    margin-left: 23.5%;
+    margin-left: 21.5%;
 }
 
 .dis-block p{
@@ -71,6 +76,11 @@ body{
     position: absolute;
     color: white;
     font-size: 3.8em;
+}
+
+#qrword{
+    margin-left: 4.35em;
+    margin-top: -2.75em;
 }
 
 #transcript{
