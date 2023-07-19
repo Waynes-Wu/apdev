@@ -1,15 +1,18 @@
 {
   "name": "apdev",
   "version": "1.0.0",
-  "description": "��#\u0000 \u0000a\u0000p\u0000d\u0000e\u0000v\u0000\r\u0000 \u0000#\u0000 \u0000a\u0000p\u0000d\u0000e\u0000v\u0000\r\u0000 \u0000#\u0000 \u0000a\u0000p\u0000d\u0000e\u0000v\u0000\r\u0000 \u0000#\u0000 \u0000a\u0000p\u0000d\u0000e\u0000v\u0000\r\u0000 \u0000# apdev",
-  "main": "script.js",
+  "description": "",
+  "main": "server.js",
   "scripts": {
-    "start": "node server/index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mongodb": "^5.7.0",
+    "mongoose": "^7.4.0",
+    "nodejs": "^0.0.0"
   }
 }
