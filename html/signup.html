@@ -24,24 +24,24 @@
                 <!-- <input class="text-field" type="text" placeholder="&#xF007; Username" style="font-family: Roboto, FontAwesome;"><br> -->
                 <!-- <input id="id_password" class="text-field" type="password" placeholder="&#xF023; Password" style="font-family: Roboto, FontAwesome;"> -->
     
-                <form action="login.html">
+                <form action="/accountcreation" method="post">
                     <div class="input-container">
                         <!-- <i class="fa fa-envelope"></i> -->
-                        <input type="email" id="email" placeholder="&#xf0e0; Email" required class="text-field">
+                        <input type="email" id="email" name="email" placeholder="&#xf0e0; Email" required class="text-field">
                     </div>
     
                     <div class="input-container">
                         <!-- <i class="fa fa-user"></i> -->
-                        <input type="text" id="username" placeholder="&#xF007; Username" required class="text-field"> 
+                        <input type="text" id="username" name="username" placeholder="&#xF007; Username" required class="text-field"> 
                     </div>
                     <div class="input-container">
                         <!-- <i class="fa fa-lock"></i> -->
-                        <input type="password" id="password" placeholder="&#xf023; Password" required class="text-field">
+                        <input type="password" id="password" name="password" placeholder="&#xf023; Password" required class="text-field">
                         <i class="fa fa-eye" id="togglePassword" style="position: absolute; margin-left: -35px; margin-top: 20px; cursor: pointer; color:black"></i>
                     </div>
                     <div class="input-container">
                         <!-- <i class="fa fa-lock"></i> -->
-                        <input type="password" id="confirm-password" placeholder="&#xf023; Confirm Password" required class="text-field">
+                        <input type="password" id="confirm-password" name="confirm-password" placeholder="&#xf023; Confirm Password" required class="text-field">
                         <i class="fa fa-eye" id="togglePassword1" style="position: absolute; margin-left: -35px; margin-top: 20px; cursor: pointer; color:black"></i>
                     </div>
                     <button type="submit" class="action-confirm" style="width: 200px;">Create Account!</button>
