@@ -19,17 +19,26 @@
             <div class="content-area">
                 <div class="login-box">
                     <h1>Log In</h1>
-                    <input class="text-field" type="text" placeholder="&#xF007; Username" style="font-family: Roboto, FontAwesome;"><br>
-                    <input id="id_password" class="text-field" type="password" placeholder="&#xF023; Password" style="font-family: Roboto, FontAwesome;">
+                    <form action="/login" method="post">
+                        <div class="input-container">
+                            <i class="fa fa-user"></i>
+                            <input type="text" id="username" name="username" placeholder="Username" required class="text-field" autocomplete="off">
+                        </div>
+                        <div class="input-container">
+                            <i class="fa fa-lock"></i>
+                            <input type="password" id="password" name="password" placeholder="Password" required class="text-field" autocomplete="off">
                             <i class="fa fa-eye" id="togglePassword" style="position: absolute; margin-left: -35px; margin-top: 20px; cursor: pointer; color:black"></i>
-                    <p class="text-10" id ="extras">&emsp;&emsp;&emsp;&emsp;&nbsp;<input type="checkbox"> Remember Me &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;<a href="#">Forgot Password?</a></p>
-                    <br><a href="index.html"><button type="button" class="action-confirm">CONTINUE</button></a>
-                    <p class="text-10">Don't have an account? Sign Up <a href="signup.html">Here</a></p>
+                        </div>
+                        <button type="submit" class="action-confirm">Log In</button>
+                        <div id="error-message" style="display: none; color: red; font-size: 15px; margin-bottom: 30px;"></div>
+                    </form>
+                    <p class="text-10">Don't have an account? <a href="signup.html">Sign Up Here</a></p>
                 </div>
+            </div>
             </div>
             <script>
                 var togglePassword = document.getElementById("togglePassword");
-                var passwordInput = document.getElementById("id_password");
+                var passwordInput = document.getElementById("password");
 
                 togglePassword.addEventListener("click", function() {
                     if (passwordInput.type === "password") {
@@ -42,7 +51,22 @@
                         togglePassword.classList.add("fa-eye");
                     }
                 });
+
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const errorMessage = urlParams.get('error');
+                const errorMessageDiv = document.getElementById('error-message');
+                if (errorMessage) {
+                    errorMessageDiv.textContent = errorMessage;
+                    errorMessageDiv.style.display = 'block';
+
+                    // Remove the error message from the URL after displaying it
+                    window.history.replaceState({}, document.title, '/login.html');
+                } else {
+                    errorMessageDiv.style.display = 'none';
+                }
             </script>
         </div>
+
     </body>
 </html>

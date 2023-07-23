@@ -37,9 +37,10 @@ app.post("/accountcreation", (req, res) => {
   }
 
   db.collection('users').insertOne(personal_data, (error, collection) =>{
-    //if there is an error, throw it
-    if(error){
-      throw error
+    if (error) {
+      console.error(error);
+      const errorMessage = encodeURIComponent("An error occurred while creating the account. Please try again.");
+      return res.redirect(`/signup.html?error=${errorMessage}`);
     }
     //if there isnt
     console.log("Record Saved");
@@ -49,6 +50,25 @@ app.post("/accountcreation", (req, res) => {
   return res.redirect('login.html')
 
 });
+
+//checks login
+app.post("/login", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  db.collection('users').findOne({ username: username, password: password }, (error, user) => {
+    if (error || !user) {
+        console.error(error);
+        const errorMessage = encodeURIComponent("Invalid username or password. Please try again.");
+        return res.redirect(`/login.html?error=${errorMessage}`);
+    }
+
+    // User is authenticated
+    return res.redirect('index.html');
+  });
+});
+
+
 
 app.get("/", (req, res) => {
   res.set({
