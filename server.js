@@ -78,6 +78,27 @@ app.get("/", (req, res) => {
   return res.redirect('signup.html')
 });
 
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'html' ,'/login.html'));
+});
+
+app.get('/contact', (req, res) => {
+  res.sendFile(path.join(__dirname, 'html' ,'/contactus.html'));
+});
+
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'html' ,'/about.html'));
+});
+
+app.get('/upload', (req, res) => {
+  res.sendFile(path.join(__dirname, 'html' ,'/upload.html'));
+});
+
+app.get('/archive', (req, res) => {
+  res.sendFile(path.join(__dirname, 'html' ,'/archive.html'));
+});
+
+// ! lel
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
   }); 
