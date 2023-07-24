@@ -174,7 +174,6 @@
 
                 editButton.classList.remove('active');
                 isEditMode = false;
-                selectedEntry = null;
             }
         }
 
@@ -296,21 +295,24 @@
             }
        
         function updateEntry() {
-            if (selectedEntry) {
+            
                 const name = document.getElementById('edit-unitname').value;
                 const description = document.getElementById('edit-category').value;
                 const condition = document.getElementById('edit-condition').value;
                 const date = document.getElementById('edit-date-of-purchase').value;
+                const image = URL.createObjectURL(document.getElementById('edit-unit-image').files[0]);
 
                 // Update the entry with the new values
                 selectedEntry.setAttribute('data-name', name);
-                selectedEntry.querySelector('.item-num').innerText = name;
-                selectedEntry.querySelector('.item-description').innerText = `Condition: ${condition}\nItem Description: ${description}\nDate of Storage: ${date}`;
+                selectedEntry.querySelector('.item-num').innerHTML = `<br>${name}`;
+                selectedEntry.querySelector('.image').src = image;
+                selectedEntry.querySelector('.item-description').innerHTML = `
+                    <br><br><br>Condition: ${condition}<br><br>Item Description: ${description}<br><br>Date of Storage: ${date}`;
 
                 // Close the edit section
                 isPopupVisible = false;
                 document.querySelector('.edit-section').style.display = 'none';
-            }
+            
         }
     </script>
 </body>
