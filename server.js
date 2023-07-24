@@ -60,9 +60,6 @@ app.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  const qrCodeURL= '/generated_qrcode/${username}_qrcode.png';
-  res.render('qrcode', { qrCodeURL });
-
   db.collection('users').findOne({ username: username, password: password }, (error, user) => {
     if (error || !user) {
         console.error(error);
