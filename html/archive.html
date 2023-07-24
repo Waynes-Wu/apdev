@@ -13,7 +13,7 @@
         <div class="sidebar">
             <a href="index.html"><img src="./logo.png"></a>
             <ul>
-                <li><a href="login.html"><i class="fa fa-shield"></i> Log In</a></li>
+                <li><a href="login.html"><i class="fa fa-shield"></i> Sign Out</a></li>
                 <li><a href="contactus.html"><i class="fa fa-phone"></i> Contact Us</a></li>
                 <li><a href="about.html"><i class="fa fa-exclamation-circle"></i> About Us</a></li>
             </ul>
@@ -21,55 +21,11 @@
         <div class="content-area">
             <div class="archive-header">
                 <input type="text" id="searchInput" placeholder="&nbsp;&nbsp;&#xf002; &nbsp;Search... ">    
-                <button class="add" onclick="togglePopup('add')">Add</button>
-                <button class="remove">Remove</button>
-                <button class="edit" onclick="togglePopup('select')">Edit</button>
+                <button class="add" onclick="togglePopup()">Add</button>
+                <button class="remove" onclick="togglePopup2()">Remove</button>
+                <button class="edit">Edit</button>
             </div>
             <div class="items">
-                <!-- <div class="image-container" data-name="comic books">
-                    <img src="./img/comicbooks.jpg" class="image" >
-                    <div class="overlay">
-                        <p class="item-num"><br>Comic Books</p>
-                        <h2 class="item-description"><br><br><br>Condition: Well-used<br><br>Unit Category: Reading <br><br>Date of Storage: 09/13/2012
-                        </h2>
-                    </div>
-    
-                </div>
-    
-                <div class="image-container"  data-name="vintage cabinet">
-                    <img src="./img/cabinet.jpg" class="image">
-                    <div class="overlay">
-                        <p class="item-num"><br>Vintage Cabinet</p>
-                        <h2 class="item-description"><br><br><br>Condition: Like-new<br><br>Unit Category: Furniture <br><br>Date of Storage: 09/05/2020
-                        </h2>
-                    </div>
-                </div>
-    
-                <div class="image-container"  data-name="ibm retro computer">
-                    <img src="./img/pc.jpg" class="image">
-                    <div class="overlay">
-                        <p class="item-num"><br>IBM Retro Computer</p>
-                        <h2 class="item-description"><br><br><br>Condition: Scrap<br><br>Unit Category: Computers <br><br>Date of Storage: 08/20/2008
-                        </h2>
-                    </div>
-                </div>
-    
-                <div class="image-container" data-name="sony walkman">
-                    <img src="./img/walkman.jpg" class="image">
-                    <div class="overlay">
-                        <p class="item-num"><br>Sony Walkman</p>
-                        <h2 class="item-description"><br><br><br>Condition: Brand New<br><br>Unit Category: Music<br><br>Date of Storage: 07/20/2015
-                        </h2>
-                    </div>
-                </div>
-                <div class="image-container"  data-name="two-seater sofa">
-                    <img src="./img/sofa.jpg" class="image">
-                    <div class="overlay">
-                        <p class="item-num"><br>Two-seater Sofa</p>
-                        <h2 class="item-description"><br><br><br>Condition: Well-used<br><br>Unit Category: Furniture <br><br>Date of Storage: 01/06/2018
-                        </h2>
-                    </div>
-                </div> -->
             </div>
         </div>
         <div class="popup-upload">
@@ -101,35 +57,19 @@
                 </center>
             </div>
         </div>
-        <div class="edit-section">
-            <div class="login-box">
+    
+        <div class="popup-delete">
+            <div class="login-box2">
                 <center>
-                    <h2 class="h2-10"><br>Edit Entry<br><br></h2>
-                    <form onsubmit="updateEntry(); return false;">
-                        <div class="input-container">
-                            <input type="text" id="edit-unitname" placeholder="&#xf0f6; Unit Name" class="text-field" autocomplete="off">
-                        </div>
-                        <div class="input-container">
-                            <input type="date" id="edit-date-of-purchase" placeholder="&#xF007; Date of Storage" class="text-field" autocomplete="off"> 
-                        </div>
-                        <div class="input-container">
-                            <input type="text" id="edit-category" placeholder="&#xF187; Item Description" class="text-field" autocomplete="off"> 
-                        </div>
-                        <div class="input-container">
-                            <input type="text" id="edit-condition" placeholder="&#xf16b; Condition" class="text-field" autocomplete="off">
-                        </div>
-                        <div class="input-container">
-                            <input type="file" id="edit-unit-image" name="edit-unit-image" accept="image/jpeg, image/png, image/jpg"
-                              style="display:none;" autocomplete="off">
-                            <label for="edit-unit-image" id="edit-file-label">Change Image</label>
-                          </div>
-                        <button type="submit" class="action-confirm" style="width: 200px; margin-top: 30px;">Update Entry</button>
-                    </form>
+                    <h2 class="h2-10"><br>Delete Item<br><br></h2>
+                    <p>Which it do you want to delete?</p><br>
+                    <select id="deleteItemSelect"></select><br><br>
+                    <button class="action-confirm" onclick="deleteItem()">Delete</button>
+                    <button class="action-confirm" onclick="cancelDelete()">Cancel</button>
                 </center>
             </div>
         </div>
-    </div>
-    
+
     <script>
 
         let selectedEntry = null;
@@ -313,6 +253,76 @@
             }
         }
     </script>
+    
+    <script>
+        let isDeletePopupVisible = false;
+        let itemToDelete;
+
+        // Function to toggle the delete popup visibility
+        function togglePopup2() {
+            const deletePopup = document.querySelector('.popup-delete');
+            isDeletePopupVisible = !isDeletePopupVisible;
+            deletePopup.style.display = isDeletePopupVisible ? 'block' : 'none';
+
+            // Populate the dropdown with item names when the popup is visible
+            if (isDeletePopupVisible) {
+                populateDeleteDropdown();
+            }
+        }
+
+        // Function to populate the delete dropdown with item names
+        function populateDeleteDropdown() {
+            const deleteItemSelect = document.getElementById('deleteItemSelect');
+            deleteItemSelect.innerHTML = ''; // Clear existing options
+
+            // Get all item containers and add them as options in the dropdown
+            const itemContainers = document.querySelectorAll('.image-container');
+            for (const container of itemContainers) {
+                const itemName = container.getAttribute('data-name');
+                const option = document.createElement('option');
+                option.value = itemName;
+                option.textContent = itemName;
+                deleteItemSelect.appendChild(option);
+            }
+        }
+
+        // Function to set the item to delete and show the delete popup
+        function showDeletePopup(itemName) {
+            itemToDelete = itemName;
+            togglePopup2();
+        }
+
+        // Function to cancel delete and hide the delete popup
+        function cancelDelete() {
+            togglePopup2();
+        }
+
+        // Function to delete the item and remove it from the list
+        function deleteItem() {
+            // Replace this part with backend logic to delete the item from the database
+
+            // For demonstration purposes, we'll remove the item from the list on the client-side
+            const itemContainers = document.querySelectorAll('.image-container');
+            for (const container of itemContainers) {
+                const name = container.getAttribute('data-name').toLowerCase();
+                if (name === itemToDelete) {
+                    container.remove();
+                    break;
+                }
+            }
+
+            // Remove the item from the dropdown as well
+            const deleteItemSelect = document.getElementById('deleteItemSelect');
+            const selectedOption = deleteItemSelect.querySelector(`option[value="${itemToDelete}"]`);
+            if (selectedOption) {
+                selectedOption.remove();
+            }
+
+            // Hide the delete popup
+            togglePopup2();
+        }
+    </script>
+    </div>
 </body>
 
 </html>
