@@ -36,8 +36,6 @@ app.post("/accountcreation", (req, res) => {
     "email": email
 
   }
-
-
   
   db.collection('users').insertOne(personal_data, (error, collection) =>{
     if (error) {
