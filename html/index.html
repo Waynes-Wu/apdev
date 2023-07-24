@@ -44,7 +44,7 @@
                     </a>
                 </button>
 
-                <button class="option-box" onclick="document.getElementById('popup').style.display='block'">
+                <button id="qrgenerator" class="option-box" onclick="document.getElementById('popup').style.display='block'">
                     <div class="option-logo">
                         <a href="#"><i class="fa fa-qrcode" id="qrcode"></i></a>
                     </div>
@@ -71,11 +71,24 @@
 
     </div>
 
-    <div id="popup" class="bg">
+   <div id="popup" class="bg">
         <div class="popupimg">
-            <img src="qrexample.PNG">
+            <img id="qrcodeImg">
         </div>
     </div>
+    <script>
+      document.querySelector('#qrgenerator').addEventListener('click',async function generateRandomQRCode() {
+      const response = await fetch('/qr');
+      const { qrCodeDataUrl } = await response.json();
+
+      const qrCodeContainer = document.querySelector('#popup > div > img');
+      qrCodeContainer.src = qrCodeDataUrl;
+    
+        });
+    </script>
+
+
+    
     <div id="vanish">
         <div class="daysremaining">
             <br>
