@@ -72,20 +72,64 @@
 
     <script>
 
+        let selectedEntry = null;
         let isPopupVisible = false;
+        let isEditMode = false;
 
         //function to toggle the popup visibility
-        function togglePopup() {
-            const popup = document.querySelector('.popup-upload');
-            isPopupVisible = !isPopupVisible;
-            popup.style.display = isPopupVisible ? 'block' : 'none';
+        function togglePopup(action) {
+
+            const editButton = document.querySelector('.edit');
+
+            if (action === 'add'){
+                editButton.classList.remove('active');
+                isEditMode = false;
+                selectedEntry = null;
+
+                const popup = document.querySelector('.popup-upload');
+                isPopupVisible = !isPopupVisible;
+                popup.style.display = isPopupVisible ? 'block' : 'none';
+            }
+
+            else if(action === 'select'){
+                //turns it yellow
+                editButton.classList.add('active');
+                selectedEntry = null;
+                isEditMode = true;
+
+                //this is the only part where we can click on an entry
+
+                const existingEntries = document.querySelectorAll('.image-container');
+                existingEntries.forEach((entry) => {
+                    entry.addEventListener('click', () => {
+                    selectEntry(entry);
+                    });
+                });
+            }
+
+            else if (action === 'edit'){
+                const popup = document.querySelector('.edit-section');
+                isPopupVisible = !isPopupVisible;
+                popup.style.display = isPopupVisible ? 'block' : 'none';
+
+                editButton.classList.remove('active');
+                isEditMode = false;
+                selectedEntry = null;
+            }
         }
 
         //function to close the popup if clicked outside
         window.onclick = function (event) {
-            const popup = document.querySelector('.popup-upload');
-            if (event.target === popup) {
-                popup.style.display = 'none';
+            const popupUpload = document.querySelector('.popup-upload');
+            const editSection = document.querySelector('.edit-section');
+
+            if (event.target === popupUpload) {
+                popupUpload.style.display = 'none';
+                isPopupVisible = false;
+            }
+
+            if (event.target === editSection) {
+                editSection.style.display = 'none';
                 isPopupVisible = false;
             }
         };
@@ -180,6 +224,33 @@
             uploadButton.style.display = 'none';
             isPopupVisible = false;
             document.querySelector('.popup-upload').style.display = 'none';
+            // document.querySelector('.edit-section').style.display = 'none';
+        }
+    
+      // Function to handle the click event on an existing entry
+        function selectEntry(entry) {
+            if (isEditMode) {
+                    selectedEntry = entry;
+                    togglePopup('edit'); // Open the edit section
+                }
+            }
+       
+        function updateEntry() {
+            if (selectedEntry) {
+                const name = document.getElementById('edit-unitname').value;
+                const description = document.getElementById('edit-category').value;
+                const condition = document.getElementById('edit-condition').value;
+                const date = document.getElementById('edit-date-of-purchase').value;
+
+                // Update the entry with the new values
+                selectedEntry.setAttribute('data-name', name);
+                selectedEntry.querySelector('.item-num').innerText = name;
+                selectedEntry.querySelector('.item-description').innerText = `Condition: ${condition}\nItem Description: ${description}\nDate of Storage: ${date}`;
+
+                // Close the edit section
+                isPopupVisible = false;
+                document.querySelector('.edit-section').style.display = 'none';
+            }
         }
     </script>
     
