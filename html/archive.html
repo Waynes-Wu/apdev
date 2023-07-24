@@ -215,6 +215,15 @@
             fileLabel.textContent = fileName;
         });
 
+        //changes the image input label to the file name
+        const editInput = document.getElementById('edit-unit-image');
+        const editLabel = document.getElementById('edit-file-label');
+
+        editInput.addEventListener('change', (event) => {
+            const editName = event.target.files[0].name;
+            editLabel.textContent = editName;
+        });
+
         const uploadButton = document.querySelector('.action-confirm');
         uploadButton.style.display = 'none';
 
