@@ -222,28 +222,26 @@ app.post('/update', upload.single('editImage'), async function(req, res){
 });
 
 //deleting entry
-app.delete('/delete/:id', async (req, res) => {
+app.post('/delete', async (req, res) => {
   try {
-    const entryId = req.params.id;
+    const { idName } = req.body;
 
-    // find the entry in the database by ID which is created by the schema and mongodb
-    const entry = await Entry.findById(entryId);
+    const existingEntry = await Entry.findOne({ name: idName }).exec();
 
-    if (!entry) {
-      return res.status(404).json({ error: 'Entry not found' });
+    if (!existingEntry) {
+      return res.status(404).json({ error: `Entry with ID ${idName} not found` });
     }
 
-    // deletes the file within the folder "uploads"
-    const imagePath = path.join(__dirname, 'uploads', entry.imageURL);
-    fs.unlinkSync(imagePath);
+    await existingEntry.deleteOne();
 
-    // delete the entry from the database
-    await entry.remove();
+    // deletes it in the folder
+    const deleteImage = existingEntry.imageURL.split('/').pop();
+    fs.unlinkSync(path.join('uploads', deleteImage));
 
-    return res.status(200).json({ message: 'Entry deleted successfully' });
+    res.json({ message: 'Entry deletion successful' });
   } catch (error) {
-    console.error('Error deleting entry:', error);
-    res.status(500).json({ error: 'An error occurred while deleting the entry' });
+    console.error("Error during entry deletion:", error);
+    res.status(500).json({ message: 'Error while deleting entry' });
   }
 });
 

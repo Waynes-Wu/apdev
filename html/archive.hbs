@@ -22,8 +22,8 @@
             <div class="archive-header">
                 <input type="text" id="searchInput" placeholder="&nbsp;&nbsp;&#xf002; &nbsp;Search... ">    
                 <button class="add" onclick="togglePopup('add')">Add</button>
-                <button class="remove">Remove</button>
-                <button class="edit" onclick="togglePopup('select')">Edit</button>
+                <button class="remove" onclick="togglePopup('delete')">Remove</button>
+                <button class="edit" onclick="togglePopup('edit')">Edit</button>
             </div>
             <div class="items">
 
@@ -105,8 +105,10 @@
         let selectedEntry = null;
         let isPopupVisible = false;
         let isEditMode = false;
+        let isDeleteMode = false;
 
         const addButton = document.querySelector('.add');
+        const deleteButton = document.querySelector('.remove');
         const editButton = document.querySelector('.edit');
 
         //function to toggle the popup visibility
@@ -115,7 +117,10 @@
             if (action === 'add'){
                 addButton.classList.add('active');
                 editButton.classList.remove('active');
+                deleteButton.classList.remove('active');
+
                 isEditMode = false;
+                isDeleteMode = false;
                 selectedEntry = null;
 
                 const popup = document.querySelector('.popup-upload');
@@ -123,20 +128,22 @@
                 popup.style.display = isPopupVisible ? 'block' : 'none';
             }
 
-            else if(action === 'select'){
+            else if(action === 'delete'){
 
                 addButton.classList.remove('active');
+                editButton.classList.remove('active');
+                isEditMode = false;
 
-                if(editButton.classList.contains('active')){
-                    editButton.classList.remove('active');
-                    isEditMode = false;
+                if(deleteButton.classList.contains('active')){
+                    deleteButton.classList.remove('active');
+                    isDeleteMode = false;
                 }
 
                 else{
-                    //turns it yellow
-                    editButton.classList.add('active');
+                    //turns it red
+                    deleteButton.classList.add('active');
                     selectedEntry = null;
-                    isEditMode = true;
+                    isDeleteMode = true;
 
                     //this is the only part where we can click on an entry
                     const existingEntries = document.querySelectorAll('.image-container');
@@ -150,9 +157,73 @@
             }
 
             else if (action === 'edit'){
-                const popup = document.querySelector('.edit-section');
-                isPopupVisible = !isPopupVisible;
-                popup.style.display = isPopupVisible ? 'block' : 'none';
+
+                addButton.classList.remove('active');
+                deleteButton.classList.remove('active');
+                isDeleteMode = false;
+
+                //to go out of edit mode
+                if(editButton.classList.contains('active')){
+                    editButton.classList.remove('active');
+                    isEditMode = false;
+                }
+
+                else{
+                    //turns it yellow
+                    editButton.classList.add('active');
+                    selectedEntry = null;
+                    isEditMode = true;
+
+                    const existingEntries = document.querySelectorAll('.image-container');
+                    existingEntries.forEach((entry) => {
+                        entry.addEventListener('click', () => {
+                            selectEntry(entry);
+                        });
+                    });
+                }
+            }
+        }
+
+        // Function to handle the click event on an existing entry
+        function selectEntry(entry) {
+            if (isEditMode) {
+                    selectedEntry = entry;
+                    fillEditFormWithData(entry);
+                    
+                    const popup = document.querySelector('.edit-section');
+                    isPopupVisible = !isPopupVisible;
+                    popup.style.display = isPopupVisible ? 'block' : 'none';
+            }
+
+            else if (isDeleteMode) {
+                selectedEntry = entry;
+                const idName = selectedEntry.getAttribute('data-name');
+                deleteEntry(idName);
+            }
+        }
+
+        async function deleteEntry(idName) {
+            try {
+                const response = await fetch('/delete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ idName }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    window.location.reload();
+                    console.log(data.message); // successful deletion
+                } 
+
+                else {
+                    const data = await response.json();
+                    console.error('Error during delete:', data.error || 'An error occurred during delete process');
+                }
+            } catch (error) {
+                console.error('Error during delete:', error);
             }
         }
 
@@ -306,61 +377,6 @@
             }
         });
 
-    //     //adds entry
-    //     function addEntry(name, description, condition, date, image) {
-    //         const formattedDate = new Date(date).toLocaleDateString('en-GB');
-
-    //         const newItem = document.createElement('div');
-    //         newItem.classList.add('image-container');
-    //         newItem.setAttribute('data-name', name);
-    //         newItem.innerHTML = `
-    //             <img src="${image}" class="image">
-    //             <div class="overlay">
-    //                 <p class="item-num"><br>${name}</p>
-    //                 <h2 class="item-description"><br><br><br>Condition: ${condition}<br><br>Item Description: ${description}<br><br>Date of Storage: ${date}</h2>
-    //             </div>
-    //         `;
-    //         //appends to container div
-    //         document.querySelector('.items').appendChild(newItem);
-    //     }
-
-    //     function addNewEntry() {
-    //         //get form values
-    //         const name = document.getElementById('unitname').value;
-    //         const description = document.getElementById('category').value;
-    //         const condition = document.getElementById('condition').value;
-    //         const date = document.getElementById('date-of-purchase').value;
-    //         const image = URL.createObjectURL(document.getElementById('unit-image').files[0]);
-            
-    //         //add the new entry
-    //         addEntry(name, description, condition, date, image);
-
-    //         //clear form inputs
-    //         document.getElementById('unitname').value = '';
-    //         document.getElementById('category').value = '';
-    //         document.getElementById('condition').value = '';
-    //         document.getElementById('date-of-purchase').value = '';
-
-    //         const fileInput = document.getElementById('unit-image');
-    //         fileInput.value = '';
-    //         document.getElementById('file-label').textContent = 'Upload Image'; 
-
-    //         //needed resets
-    //         uploadButton.style.display = 'none';
-    //         isPopupVisible = false;
-    //         document.querySelector('.popup-upload').style.display = 'none';
-    //         // document.querySelector('.edit-section').style.display = 'none';
-    //     }
-    
-       // Function to handle the click event on an existing entry
-        function selectEntry(entry) {
-            if (isEditMode) {
-                    selectedEntry = entry;
-                    fillEditFormWithData(entry);
-                    togglePopup('edit'); // Open the edit section
-            }
-        }
-
         function fillEditFormWithData(entry) {
             // gets the data from the selected entry
             const name = entry.getAttribute('data-name');
@@ -421,26 +437,6 @@
             }
         }
        
-    //     function updateEntry() {
-            
-    //             const name = document.getElementById('edit-unitname').value;
-    //             const description = document.getElementById('edit-category').value;
-    //             const condition = document.getElementById('edit-condition').value;
-    //             const date = document.getElementById('edit-date-of-purchase').value;
-    //             const image = URL.createObjectURL(document.getElementById('edit-unit-image').files[0]);
-
-    //             // Update the entry with the new values
-    //             selectedEntry.setAttribute('data-name', name);
-    //             selectedEntry.querySelector('.item-num').innerHTML = `<br>${name}`;
-    //             selectedEntry.querySelector('.image').src = image;
-    //             selectedEntry.querySelector('.item-description').innerHTML = `
-    //                 <br><br><br>Condition: ${condition}<br><br>Item Description: ${description}<br><br>Date of Storage: ${date}`;
-
-    //             // Close the edit section
-    //             isPopupVisible = false;
-    //             document.querySelector('.edit-section').style.display = 'none';
-            
-    //     }
     </script>
 </body>
 

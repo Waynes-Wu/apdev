@@ -368,6 +368,10 @@ input{
     background-color: green;
   }
 
+.remove.active {
+    background-color: red;
+  }
+
 .edit.active {
     background-color: yellow;
   }
