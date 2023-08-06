@@ -3,6 +3,9 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose")
 const qrcode = require("qrcode");
 const path = require("path");
+const multer = require('multer'); // for the image URLs
+const fs = require('fs'); // files
+const hbs = require('hbs');
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -16,6 +19,9 @@ app.use(bodyParser.json())
 
 app.use(express.static('html', { index: 'login.html' }));
 
+//needed so that the images are visualized
+app.use('/uploads', express.static('uploads'));
+
 // url to the database
 mongoose.connect('mongodb://127.0.0.1:27017/E-Tabi_DB')
 const db = mongoose.connection
@@ -23,53 +29,223 @@ const db = mongoose.connection
 db.on('error', () => console.log ("Failed to Connect to Database"))
 db.once('open', () => console.log ("Successfully Connected to Database"))
 
-//gets values from the html
-app.post("/accountcreation", (req, res) => {
-  const username = req.body.username
-  const password = req.body.password
-  const email = req.body.email
-
-  // the data gets stored in this object:
-  const personal_data = {
-    "username": username,
-    "password": password,
-    "email": email
-
+//user schema
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true
   }
-  
-  db.collection('users').insertOne(personal_data, (error, collection) =>{
-    if (error) {
-      console.error(error);
-      const errorMessage = encodeURIComponent("An error occurred while creating the account. Please try again.");
-      return res.redirect(`/signup.html?error=${errorMessage}`);
-    }
-    //if there isnt
-    console.log("Record Saved");
-  });
+});
 
-  //after recording data, fresh page
-  return res.redirect('login.html')
-  
+const User = mongoose.model("User", userSchema);
+
+
+//gets values from the html
+app.post("/accountcreation", async (req, res) => {
+  const { email, username, password } = req.body;
+
+  try {
+    // Check if the email already exists
+    const existingEmail = await User.findOne({ email }).exec();
+
+    if (existingEmail) {
+      const errorMessage = "The email has already been taken. Please try a different one.";
+      return res.status(409).json({ error: errorMessage });
+    }
+
+    else{
+      const newUser = new User({
+        username,
+        password,
+        email,
+      });
+
+      // Save the user to the database
+      await newUser.save();
+
+      // User creation successful, redirect to the login page
+      return res.status(201).json({ message: 'User registered successfully' });
+    }
+  } catch (error) {
+    console.error('Error checking email address:', error);
+    const errorMessage = "An error occurred while creating the account. Please try again.";
+    return res.status(500).json({ error: errorMessage });
+  }
 });
 
 //checks login
-app.post("/login", (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
 
-  db.collection('users').findOne({ username: username, password: password }, (error, user) => {
-    if (error || !user) {
-        console.error(error);
-        const errorMessage = encodeURIComponent("Invalid username or password. Please try again.");
-        return res.redirect(`/login.html?error=${errorMessage}`);
+  try {
+    // Find the user in the database based on the username and password
+    const user = await User.findOne({ username, password }).exec();
+
+    if (!user) {
+      const errorMessage = encodeURIComponent("Invalid username or password. Please try again.");
+      return res.redirect(`/login.html?error=${errorMessage}`);
     }
 
     // User is authenticated
     return res.redirect('index.html');
-  });
+  } catch (error) {
+    console.error('Error during login:', error);
+    const errorMessage = "An error occurred during login. Please try again.";
+    return res.redirect(`/login.html?error=${encodeURIComponent(errorMessage)}`);
+  }
 });
 
+//entry schema
+const entrySchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true
+  },
 
+  date: {
+    type: Date,
+    required: true
+  },
+
+  description: {
+    type: String,
+    required: true
+  },
+
+  condition: {
+    type: String,
+    required: true
+  },
+
+  imageURL: {
+    type: String,
+    required: true
+  }
+});
+
+const Entry = mongoose.model('Entry', entrySchema);
+
+//needed multer stuff
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads'); // directory where the images will be stored
+  },
+  filename: function (req, file, cb) {
+      // if it already has a timestamp, it removes it
+      const originalFilename = file.originalname;
+      const indexOfTimestamp = originalFilename.indexOf('-');
+      const trimmedFilename = indexOfTimestamp !== -1 ? originalFilename.slice(indexOfTimestamp + 1) : originalFilename;
+  
+      cb(null, Date.now() + '-' + trimmedFilename); // naming the image file with a timestamp 
+  }
+});
+
+const upload = multer({ storage: storage });
+
+//saving the entry
+app.post('/upload', upload.single('unit-image'), async (req, res) => {
+  try {
+    const { name, date, description, condition } = req.body;
+
+    const imageURL = req.file.filename; // multer generates the file name and contains the path to the uploaded image
+
+    const newEntry = new Entry({
+      name,
+      date,
+      description,
+      condition,
+      imageURL
+    });
+
+    await newEntry.save();
+    
+    res.status(201).json({ message: 'Entry created successfully' });
+  } catch (error) {
+    console.error('Entry name already taken', error);
+    res.status(500).json({ error: 'There is already an entry with the existing name, change it' });
+  }
+});
+
+//gets entries from the db
+app.get('/archive', async (req, res) => {
+  try {
+    // fetches all entries from the database
+    const allEntries = await Entry.find({}).lean().exec();
+
+    // sends the entries data to the HTML page
+    res.render('archive', { entries: allEntries});
+  } catch (error) {
+    console.error('Error fetching entries:', error);
+    res.status(500).json({ error: 'An error occurred while fetching entries' });
+  }
+});
+
+//updating entry
+app.post('/update', upload.single('editImage'), async function(req, res){
+  try {
+    const {editName, editDate, editDesc, editCond, idName} = req.body; // these need to match the form names
+    const imageURL = req.file.filename;
+
+    const existingEntry = await Entry.findOne({ name: idName }).exec();
+
+    if (!existingEntry) {
+      return res.status(404).json({ error: `Entry with ID ${idName} not found` });
+    }
+
+    const oldImage = existingEntry.imageURL.split('/').pop();
+    fs.unlinkSync(path.join('uploads', oldImage));
+
+    existingEntry.name = editName;
+    existingEntry.date = editDate;
+    existingEntry.description = editDesc;
+    existingEntry.condition = editCond;
+    existingEntry.imageURL = imageURL;
+
+    await existingEntry.save();
+
+    res.json({ message: 'Entry update successful' });
+    
+} catch (error) {
+    console.error("Error during update:", error);
+    res.status(500).json({ message: 'Error while updating entry' });
+}
+});
+
+//deleting entry
+app.delete('/delete/:id', async (req, res) => {
+  try {
+    const entryId = req.params.id;
+
+    // find the entry in the database by ID which is created by the schema and mongodb
+    const entry = await Entry.findById(entryId);
+
+    if (!entry) {
+      return res.status(404).json({ error: 'Entry not found' });
+    }
+
+    // deletes the file within the folder "uploads"
+    const imagePath = path.join(__dirname, 'uploads', entry.imageURL);
+    fs.unlinkSync(imagePath);
+
+    // delete the entry from the database
+    await entry.remove();
+
+    return res.status(200).json({ message: 'Entry deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting entry:', error);
+    res.status(500).json({ error: 'An error occurred while deleting the entry' });
+  }
+});
 
 app.get("/", (req, res) => {
   res.set({
@@ -95,9 +271,9 @@ app.get('/upload', (req, res) => {
   res.sendFile(path.join(__dirname, 'html' ,'/upload.html'));
 });
 
-app.get('/archive', (req, res) => {
-  res.sendFile(path.join(__dirname, 'html' ,'/archive.html'));
-});
+// app.get('/archive', (req, res) => {
+//   res.render('archive'); 
+// });
 
 app.get('/qr', async(req, res) => {
   
@@ -107,6 +283,19 @@ app.get('/qr', async(req, res) => {
     res.json({ qrCodeDataUrl });
 });
 
+app.set('view engine', 'hbs');
+
+app.set('views', path.join(__dirname, 'html'));
+
+hbs.registerHelper('formatDate', (date) => {
+  const formattedDate = new Date(date).toLocaleDateString('en-GB', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+  
+  return formattedDate;
+});
 
 
 // ! lel

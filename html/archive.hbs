@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Archive List</title>
+    <link href="./archive_style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="sidebar">
+            <a href="index.html"><img src="./logo.png"></a>
+            <ul>
+                <li><a href="login.html"><i class="fa fa-shield"></i> Log In</a></li>
+                <li><a href="contactus.html"><i class="fa fa-phone"></i> Contact Us</a></li>
+                <li><a href="about.html"><i class="fa fa-exclamation-circle"></i> About Us</a></li>
+            </ul>
+        </div>
+        <div class="content-area">
+            <div class="archive-header">
+                <input type="text" id="searchInput" placeholder="&nbsp;&nbsp;&#xf002; &nbsp;Search... ">    
+                <button class="add" onclick="togglePopup('add')">Add</button>
+                <button class="remove">Remove</button>
+                <button class="edit" onclick="togglePopup('select')">Edit</button>
+            </div>
+            <div class="items">
+
+                {{#each entries}}
+                    <div class="image-container" data-name="{{name}}">
+                        <img src="/uploads/{{imageURL}}" class="image">
+                        <div class="overlay">
+                            <p class="item-num"><br>{{name}}</p>
+                            <h2 class="item-description">
+                                <br><br><br>Condition: {{condition}}<br><br>
+                                Item Description: {{description}}<br><br>
+                                Date of Storage: {{formatDate date}}
+                            </h2>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+        <div class="popup-upload">
+            <div class="login-box">
+                <center><h2 class="h2-10"><br>Upload Unit<br><br></h2>
+                    <form id="entryForm">
+                        <div class="input-container">
+                            <input type="text" id="unitname" name="name" placeholder="&#xf0f6; Unit Name" class="text-field" autocomplete="off" required>
+                        </div>
+
+                        <div class="input-container">
+                            <input type="date" id="date-of-purchase" name="date" placeholder="&#xF007; Date of Storage" class="text-field" autocomplete="off" required> 
+                        </div>
+                        <div class="input-container">
+                            <input type="text" id="category" name="description" placeholder="&#xF187; Item Description" class="text-field" autocomplete="off" required> 
+                        </div>
+                        <div class="input-container">
+                            <input type="text" id="condition" name="condition" placeholder="&#xf16b; Condition" class="text-field" autocomplete="off" required>
+                        </div>
+                        <div class="input-container">
+                            <input type="file" id="unit-image" name="unit-image" accept="image/jpeg, image/png, image/jpg" style="display:none;" autocomplete="off" required>
+                            <label for="unit-image" id="file-label">Upload Image</label>
+                        </div>
+                        <p id="uploadError" style="color: red; font-size: 15px; margin-bottom: 30px; margin-top: 30px;"></p>
+                        <button type="submit" id="entryButton" class="action-confirm" style="width: 200px; margin-top: 30px;">Upload File</button>
+                </form>
+                </center>
+            </div>
+        </div>
+        <div class="edit-section">
+            <div class="login-box">
+                <center>
+                    <h2 class="h2-10"><br>Edit Entry<br><br></h2>
+                    <form id="updateForm">
+                        <div class="input-container">
+                            <input type="text" id="editName" name="editName" placeholder="&#xf0f6; Unit Name" class="text-field" autocomplete="off">
+                        </div>
+                        <div class="input-container">
+                            <input type="date" id="editDate" name="editDate" placeholder="&#xF007; Date of Storage" class="text-field" autocomplete="off"> 
+                        </div>
+                        <div class="input-container">
+                            <input type="text" id="editDesc" name="editDesc" placeholder="&#xF187; Item Description" class="text-field" autocomplete="off"> 
+                        </div>
+                        <div class="input-container">
+                            <input type="text" id="editCond" name="editCond" placeholder="&#xf16b; Condition" class="text-field" autocomplete="off">
+                        </div>
+                        <div class="input-container">
+                            <input type="file" id="editImage" name="editImage" accept="image/jpeg, image/png, image/jpg"
+                              style="display:none;" autocomplete="off">
+                            <label for="editImage" id="edit-file-label">Change Image</label>
+                        </div>
+                        <p id="updateError" style="color: red; font-size: 15px; margin-top: 30px;"></p>
+                        <button type="submit" id="updateButton" class="action-confirm" style="width: 200px; margin-top: 30px;">Update Entry</button>
+                    </form>
+                </center>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        
+        document.getElementById('searchInput').value = '';
+        let selectedEntry = null;
+        let isPopupVisible = false;
+        let isEditMode = false;
+
+        const addButton = document.querySelector('.add');
+        const editButton = document.querySelector('.edit');
+
+        //function to toggle the popup visibility
+        function togglePopup(action) {
+
+            if (action === 'add'){
+                addButton.classList.add('active');
+                editButton.classList.remove('active');
+                isEditMode = false;
+                selectedEntry = null;
+
+                const popup = document.querySelector('.popup-upload');
+                isPopupVisible = !isPopupVisible;
+                popup.style.display = isPopupVisible ? 'block' : 'none';
+            }
+
+            else if(action === 'select'){
+
+                addButton.classList.remove('active');
+
+                if(editButton.classList.contains('active')){
+                    editButton.classList.remove('active');
+                    isEditMode = false;
+                }
+
+                else{
+                    //turns it yellow
+                    editButton.classList.add('active');
+                    selectedEntry = null;
+                    isEditMode = true;
+
+                    //this is the only part where we can click on an entry
+                    const existingEntries = document.querySelectorAll('.image-container');
+                    existingEntries.forEach((entry) => {
+                        entry.addEventListener('click', () => {
+                            selectEntry(entry);
+                        });
+                    });
+                }
+
+            }
+
+            else if (action === 'edit'){
+                const popup = document.querySelector('.edit-section');
+                isPopupVisible = !isPopupVisible;
+                popup.style.display = isPopupVisible ? 'block' : 'none';
+            }
+        }
+
+        //function to close the popup if clicked outside
+        window.onclick = function (event) {
+            const popupUpload = document.querySelector('.popup-upload');
+            const editSection = document.querySelector('.edit-section');
+
+            if (event.target === popupUpload) {
+                popupUpload.style.display = 'none';
+                isPopupVisible = false;
+                addButton.classList.remove('active');
+            }
+
+            if (event.target === editSection) {
+                editSection.style.display = 'none';
+                isPopupVisible = false;
+            }
+            
+        };
+
+        const searchInput = document.querySelector('#searchInput');
+        const items = document.querySelectorAll('.image-container');
+    
+        searchInput.addEventListener('input', function (event) {
+            const searchTerm = event.target.value.toLowerCase();
+    
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                const name = item.getAttribute('data-name').toLowerCase();
+                name.includes(searchTerm) && (item.style.display = 'block') || (item.style.display = 'none');
+            }
+        });
+
+        //changes the image input label to the file name
+        const fileInput = document.getElementById('unit-image');
+        const fileLabel = document.getElementById('file-label');
+
+        fileInput.addEventListener('change', (event) => {
+            const fileName = event.target.files[0].name;
+            fileLabel.textContent = fileName;
+        });
+
+        //changes the image input label to the file name
+        const editInput = document.getElementById('editImage');
+        const editLabel = document.getElementById('edit-file-label');
+
+        editInput.addEventListener('change', (event) => {
+            const editName = event.target.files[0].name;
+            editLabel.textContent = editName;
+        });
+
+        const uploadButton = document.querySelector('.action-confirm');
+        uploadButton.style.display = 'none';
+
+        //when all 5 entries are filled the submit button appears
+        function checkInputs() {
+            const unitname = document.getElementById('unitname').value;
+            const category = document.getElementById('category').value;
+            const condition = document.getElementById('condition').value;
+            const date = document.getElementById('date-of-purchase').value;
+            const image = document.getElementById('unit-image').value;
+
+            if (unitname && category && condition && date && image) {
+                uploadButton.style.display = 'block';
+            } else {
+                uploadButton.style.display = 'none';
+            }
+        }
+
+        //adds input event listeners to all input fields
+        document.getElementById('unitname').addEventListener('input', checkInputs);
+        document.getElementById('category').addEventListener('input', checkInputs);
+        document.getElementById('condition').addEventListener('input', checkInputs);
+        document.getElementById('date-of-purchase').addEventListener('input', checkInputs);
+        document.getElementById('unit-image').addEventListener('input', checkInputs);
+
+        const uploadForm = document.forms.entryForm;
+        const uploadCheck = document.querySelector("#entryButton");
+        const uploadMSG = document.querySelector("#uploadError");
+
+        uploadCheck?.addEventListener("click", async function (e){
+            e.preventDefault();
+
+            const formData = new FormData(uploadForm);
+            const name = formData.get("name");
+            const date = formData.get("date");
+            const description = formData.get("description");
+            const condition = formData.get("condition");
+            const imageURL = URL.createObjectURL(document.getElementById('unit-image').files[0]);
+            
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    window.location.reload();
+                    uploadForm.reset();
+                } 
+                
+                else {
+                    const data = await response.json();
+                    uploadMSG.textContent = data.error || 'An error occurred during registration';
+                }
+
+            } catch (error) {
+                uploadMSG.textContent = 'An error occurred during registration';
+                console.error('Error during registration:', error);
+            }
+        });
+
+        const updateForm = document.forms.updateForm;
+        const updateCheck = document.querySelector("#updateButton");
+        const updateMSG = document.querySelector("#updateError");
+
+        updateCheck?.addEventListener("click", async function (e){
+            e.preventDefault();
+
+            const formData = new FormData(updateForm);
+            const name = formData.get("editName"); 
+            const date = formData.get("editDate"); 
+            const description = formData.get("editDesc"); 
+            const condition = formData.get("editCond"); 
+            const imageURL = URL.createObjectURL(document.getElementById('editImage').files[0]);
+            const idName = selectedEntry.getAttribute('data-name'); //data-name is not changed until after the modification  
+            formData.append('idName', idName);
+
+            try {
+                const response = await fetch('/update', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    window.location.reload();
+                    updateForm.reset();
+                    isPopupVisible = false;
+                    document.querySelector('.edit-section').style.display = 'none';
+                } 
+                
+                else {
+                    const data = await response.json();
+                    updateMSG.textContent = data.error || 'An error occurred during update process';
+                }
+
+            } catch (error) {
+                updateMSG.textContent = 'An error occurred during update process';
+                console.error('Error during update:', error);
+            }
+        });
+
+    //     //adds entry
+    //     function addEntry(name, description, condition, date, image) {
+    //         const formattedDate = new Date(date).toLocaleDateString('en-GB');
+
+    //         const newItem = document.createElement('div');
+    //         newItem.classList.add('image-container');
+    //         newItem.setAttribute('data-name', name);
+    //         newItem.innerHTML = `
+    //             <img src="${image}" class="image">
+    //             <div class="overlay">
+    //                 <p class="item-num"><br>${name}</p>
+    //                 <h2 class="item-description"><br><br><br>Condition: ${condition}<br><br>Item Description: ${description}<br><br>Date of Storage: ${date}</h2>
+    //             </div>
+    //         `;
+    //         //appends to container div
+    //         document.querySelector('.items').appendChild(newItem);
+    //     }
+
+    //     function addNewEntry() {
+    //         //get form values
+    //         const name = document.getElementById('unitname').value;
+    //         const description = document.getElementById('category').value;
+    //         const condition = document.getElementById('condition').value;
+    //         const date = document.getElementById('date-of-purchase').value;
+    //         const image = URL.createObjectURL(document.getElementById('unit-image').files[0]);
+            
+    //         //add the new entry
+    //         addEntry(name, description, condition, date, image);
+
+    //         //clear form inputs
+    //         document.getElementById('unitname').value = '';
+    //         document.getElementById('category').value = '';
+    //         document.getElementById('condition').value = '';
+    //         document.getElementById('date-of-purchase').value = '';
+
+    //         const fileInput = document.getElementById('unit-image');
+    //         fileInput.value = '';
+    //         document.getElementById('file-label').textContent = 'Upload Image'; 
+
+    //         //needed resets
+    //         uploadButton.style.display = 'none';
+    //         isPopupVisible = false;
+    //         document.querySelector('.popup-upload').style.display = 'none';
+    //         // document.querySelector('.edit-section').style.display = 'none';
+    //     }
+    
+       // Function to handle the click event on an existing entry
+        function selectEntry(entry) {
+            if (isEditMode) {
+                    selectedEntry = entry;
+                    fillEditFormWithData(entry);
+                    togglePopup('edit'); // Open the edit section
+            }
+        }
+
+        function fillEditFormWithData(entry) {
+            // gets the data from the selected entry
+            const name = entry.getAttribute('data-name');
+            const description = entry.querySelector('.item-description').textContent.trim().split('Item Description: ')[1].split(' Date of Storage: ')[0].trim();
+            const condition = entry.querySelector('.item-description').textContent.trim().split('Condition: ')[1].split(' Item Description: ')[0].trim();
+            const dateStr = entry.querySelector('.item-description').textContent.trim().split('Date of Storage: ')[1];
+
+            const dateParts = dateStr.split(' ');
+            const day = parseInt(dateParts[0], 10);
+            const month = parseMonth(dateParts[1]);
+            const year = parseInt(dateParts[2], 10);
+
+            // a usable date format
+            const date = new Date(Date.UTC(year, month, day, 0, 0, 0));
+
+            // pre-fills the edit form with the data
+            document.getElementById('editName').value = name;
+            document.getElementById('editDesc').value = description;
+            document.getElementById('editCond').value = condition;
+            document.getElementById('editDate').valueAsDate = date; // Set the date value directly
+
+            // Set the image input label to the file name
+            const imageURL = entry.querySelector('.image').src;
+            const editLabel = document.getElementById('edit-file-label');
+            const fileName = imageURL.split('/').pop(); // Get the file name from the image URL
+            editLabel.textContent = fileName;
+
+            getImageData(imageURL).then((imageData) => {
+                if (imageData) {
+                const imageFile = new File([imageData], fileName);
+                const editImageInput = document.getElementById('editImage');
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(imageFile);
+                editImageInput.files = dataTransfer.files;
+                }
+            });
+        }
+        
+
+        // changes the text format to soemthing usable
+        function parseMonth(monthStr) {
+            const months = [
+            'January', 'February', 'March', 'April', 'May', 'June', 'July',
+            'August', 'September', 'October', 'November', 'December'
+            ];
+            return months.findIndex(month => month.toLowerCase() === monthStr.toLowerCase());
+        }
+
+        async function getImageData(imagePath) {
+            try {
+                const response = await fetch(imagePath);
+                const imageData = await response.blob();
+                return imageData;
+            } catch (error) {
+                console.error('Error fetching the image:', error);
+                // Handle the error if the image fetch fails
+                return null;
+            }
+        }
+       
+    //     function updateEntry() {
+            
+    //             const name = document.getElementById('edit-unitname').value;
+    //             const description = document.getElementById('edit-category').value;
+    //             const condition = document.getElementById('edit-condition').value;
+    //             const date = document.getElementById('edit-date-of-purchase').value;
+    //             const image = URL.createObjectURL(document.getElementById('edit-unit-image').files[0]);
+
+    //             // Update the entry with the new values
+    //             selectedEntry.setAttribute('data-name', name);
+    //             selectedEntry.querySelector('.item-num').innerHTML = `<br>${name}`;
+    //             selectedEntry.querySelector('.image').src = image;
+    //             selectedEntry.querySelector('.item-description').innerHTML = `
+    //                 <br><br><br>Condition: ${condition}<br><br>Item Description: ${description}<br><br>Date of Storage: ${date}`;
+
+    //             // Close the edit section
+    //             isPopupVisible = false;
+    //             document.querySelector('.edit-section').style.display = 'none';
+            
+    //     }
+    </script>
+</body>
+
+</html>

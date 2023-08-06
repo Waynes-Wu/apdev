@@ -364,6 +364,10 @@ input{
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
+.add.active {
+    background-color: green;
+  }
+
 .edit.active {
     background-color: yellow;
   }

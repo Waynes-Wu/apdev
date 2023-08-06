@@ -24,7 +24,7 @@
                 <!-- <input class="text-field" type="text" placeholder="&#xF007; Username" style="font-family: Roboto, FontAwesome;"><br> -->
                 <!-- <input id="id_password" class="text-field" type="password" placeholder="&#xF023; Password" style="font-family: Roboto, FontAwesome;"> -->
     
-                <form action="/accountcreation" method="post">
+                <form id="registerForm">
                     <div class="input-container">
                         <!-- <i class="fa fa-envelope"></i> -->
                         <input type="email" id="email" name="email" placeholder="&#xf0e0; Email" required class="text-field" autocomplete="off">
@@ -44,7 +44,8 @@
                         <input type="password" id="confirm-password" name="confirm-password" placeholder="&#xf023; Confirm Password" required class="text-field" autocomplete="off">
                         <i class="fa fa-eye" id="togglePassword1" style="position: absolute; margin-left: -35px; margin-top: 20px; cursor: pointer; color:black"></i>
                     </div>
-                    <button type="submit" class="action-confirm" style="width: 200px;">Create Account!</button>
+                    <p id="errorMessage" style="color: red; font-size: 15px; margin-bottom: 30px;"></p>
+                    <button type="submit" id="registerButton" class="action-confirm" style="width: 200px;">Create Account!</button>
                 </form>
                 </center>
             </div>
@@ -78,6 +79,55 @@
                     togglePassword2.classList.add("fa-eye");
                 }
             });
+
+            // checks if the email is already in the database
+            const regForm = document.forms.registerForm;
+            const registerCheck = document.querySelector("#registerButton");
+            const errorMSG = document.querySelector("#errorMessage");
+
+            registerCheck?.addEventListener("click", async function (e){
+                e.preventDefault();
+
+                const formData = new FormData(regForm);
+                const email = formData.get("email");
+                const username = formData.get("username");
+                const password = formData.get("password");
+                const conpass = formData.get("confirm-password");
+
+                if (email === "" || username === "" || password === "") {
+                    errorMSG.textContent = 'Fill up all required fields';
+                } 
+                
+                else if (password !== conpass) {
+                    errorMSG.textContent = 'Passwords do not match';
+                } 
+                
+                else {
+                    try {
+                        const response = await fetch('/accountcreation', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email, username, password })
+                        });
+
+                        if (response.ok) {
+                            window.location.href = 'login.html';
+                        } 
+                        
+                        else {
+                            const data = await response.json();
+                            errorMSG.textContent = data.error || 'An error occurred during registration';
+                        }
+
+                    } catch (error) {
+                        errorMSG.textContent = 'An error occurred during registration';
+                        console.error('Error during registration:', error);
+                    }
+                }
+            });
+            
         </script>
 </body>
 </html>
