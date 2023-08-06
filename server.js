@@ -12,7 +12,7 @@ const app = express();
 
 //test response
 app.use(bodyParser.urlencoded({
-  extended:true
+  extended: true
 }))
 
 app.use(bodyParser.json())
@@ -26,8 +26,8 @@ app.use('/uploads', express.static('uploads'));
 mongoose.connect('mongodb://127.0.0.1:27017/E-Tabi_DB')
 const db = mongoose.connection
 
-db.on('error', () => console.log ("Failed to Connect to Database"))
-db.once('open', () => console.log ("Successfully Connected to Database"))
+db.on('error', () => console.log("Failed to Connect to Database"))
+db.once('open', () => console.log("Successfully Connected to Database"))
 
 //user schema
 const userSchema = new mongoose.Schema({
@@ -62,7 +62,7 @@ app.post("/accountcreation", async (req, res) => {
       return res.status(409).json({ error: errorMessage });
     }
 
-    else{
+    else {
       const newUser = new User({
         username,
         password,
@@ -133,7 +133,33 @@ const entrySchema = new mongoose.Schema({
   }
 });
 
+const editHistorySchema = new mongoose.Schema({
+  action: {
+    type: String,
+    enum: ['edit', 'add', 'remove'],
+    required: true,
+  },
+  // user: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'User',
+  //   required: true,
+  // },
+  entry: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Entry',
+    required: true,
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
 const Entry = mongoose.model('Entry', entrySchema);
+const EditHistory = mongoose.model('EditHistory', editHistorySchema);
+
+
+
 
 //needed multer stuff
 const storage = multer.diskStorage({
@@ -141,12 +167,12 @@ const storage = multer.diskStorage({
     cb(null, 'uploads'); // directory where the images will be stored
   },
   filename: function (req, file, cb) {
-      // if it already has a timestamp, it removes it
-      const originalFilename = file.originalname;
-      const indexOfTimestamp = originalFilename.indexOf('-');
-      const trimmedFilename = indexOfTimestamp !== -1 ? originalFilename.slice(indexOfTimestamp + 1) : originalFilename;
-  
-      cb(null, Date.now() + '-' + trimmedFilename); // naming the image file with a timestamp 
+    // if it already has a timestamp, it removes it
+    const originalFilename = file.originalname;
+    const indexOfTimestamp = originalFilename.indexOf('-');
+    const trimmedFilename = indexOfTimestamp !== -1 ? originalFilename.slice(indexOfTimestamp + 1) : originalFilename;
+
+    cb(null, Date.now() + '-' + trimmedFilename); // naming the image file with a timestamp 
   }
 });
 
@@ -168,7 +194,13 @@ app.post('/upload', upload.single('unit-image'), async (req, res) => {
     });
 
     await newEntry.save();
-    
+
+    const newEditHistory = new EditHistory({
+      action: 'add',
+      entry: newEntry._id,
+    });
+    await newEditHistory.save();
+
     res.status(201).json({ message: 'Entry created successfully' });
   } catch (error) {
     console.error('Entry name already taken', error);
@@ -183,7 +215,7 @@ app.get('/archive', async (req, res) => {
     const allEntries = await Entry.find({}).lean().exec();
 
     // sends the entries data to the HTML page
-    res.render('archive', { entries: allEntries});
+    res.render('archive', { entries: allEntries });
   } catch (error) {
     console.error('Error fetching entries:', error);
     res.status(500).json({ error: 'An error occurred while fetching entries' });
@@ -191,9 +223,9 @@ app.get('/archive', async (req, res) => {
 });
 
 //updating entry
-app.post('/update', upload.single('editImage'), async function(req, res){
+app.post('/update', upload.single('editImage'), async function (req, res) {
   try {
-    const {editName, editDate, editDesc, editCond, idName} = req.body; // these need to match the form names
+    const { editName, editDate, editDesc, editCond, idName } = req.body; // these need to match the form names
     const imageURL = req.file.filename;
 
     const existingEntry = await Entry.findOne({ name: idName }).exec();
@@ -213,12 +245,20 @@ app.post('/update', upload.single('editImage'), async function(req, res){
 
     await existingEntry.save();
 
+    // ! history
+    const newEditHistory = new EditHistory({
+      action: 'edit',
+      entry: existingEntry._id,
+    });
+    await newEditHistory.save();
+
+
     res.json({ message: 'Entry update successful' });
-    
-} catch (error) {
+
+  } catch (error) {
     console.error("Error during update:", error);
     res.status(500).json({ message: 'Error while updating entry' });
-}
+  }
 });
 
 //deleting entry
@@ -238,6 +278,13 @@ app.post('/delete', async (req, res) => {
     const deleteImage = existingEntry.imageURL.split('/').pop();
     fs.unlinkSync(path.join('uploads', deleteImage));
 
+    // ! history
+    const newEditHistory = new EditHistory({
+      action: 'remove',
+      entry: existingEntry._id,
+    });
+    await newEditHistory.save();
+
     res.json({ message: 'Entry deletion successful' });
   } catch (error) {
     console.error("Error during entry deletion:", error);
@@ -254,31 +301,31 @@ app.get("/", (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'html' ,'/login.html'));
+  res.sendFile(path.join(__dirname, 'html', '/login.html'));
 });
 
 app.get('/contact', (req, res) => {
-  res.sendFile(path.join(__dirname, 'html' ,'/contactus.html'));
+  res.sendFile(path.join(__dirname, 'html', '/contactus.html'));
 });
 
 app.get('/about', (req, res) => {
-  res.sendFile(path.join(__dirname, 'html' ,'/about.html'));
+  res.sendFile(path.join(__dirname, 'html', '/about.html'));
 });
 
 app.get('/upload', (req, res) => {
-  res.sendFile(path.join(__dirname, 'html' ,'/upload.html'));
+  res.sendFile(path.join(__dirname, 'html', '/upload.html'));
 });
 
 // app.get('/archive', (req, res) => {
 //   res.render('archive'); 
 // });
 
-app.get('/qr', async(req, res) => {
-  
-  const stJson=JSON.stringify("gyg");
- //const qrCodeFilePath = path.join(__dirname, "qrcodes", `${username}_qrcode.png`);
+app.get('/qr', async (req, res) => {
+
+  const stJson = JSON.stringify("gyg");
+  //const qrCodeFilePath = path.join(__dirname, "qrcodes", `${username}_qrcode.png`);
   const qrCodeDataUrl = await qrcode.toDataURL(stJson);
-    res.json({ qrCodeDataUrl });
+  res.json({ qrCodeDataUrl });
 });
 
 app.set('view engine', 'hbs');
@@ -291,13 +338,11 @@ hbs.registerHelper('formatDate', (date) => {
     month: 'long',
     day: 'numeric',
   });
-  
+
   return formattedDate;
 });
 
 
-// ! lel
-
 app.listen(PORT, () => {
-    console.log(`Server listening on ${PORT}`);
-  }); 
+  console.log(`Server listening on ${PORT}`);
+}); 
