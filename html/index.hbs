@@ -12,7 +12,7 @@
     <div class="wrapper">
         <div class="background-container"></div>
         <div class="sidebar">
-            <a href="index.html"><img src="./logo.png"></a>
+            <a href="/index"><img src="./logo.png"></a>
             <ul>
                 <li><a href="login.html"><i class="fa fa-shield"></i> Sign Out</a></li>
                 <li><a href="contactus.html"><i class="fa fa-phone"></i> Contact Us</a></li>
@@ -58,7 +58,6 @@
                     <p id="transcript">Transcript<br>Records</p>
                 </button>
 
-
                 <button class="option-box" onclick="vanishMessage()">
                     <div class="option-logo">
                         <a href="#"><i class="fa fa-calendar"></i></a>
@@ -66,12 +65,10 @@
                     <p id="payment">Remaining<br>Lease Term</p>
                 </button>
             </div>
-
         </div>
-
     </div>
 
-   <div id="popup" class="bg">
+    <div id="popup" class="bg">
         <div class="popupimg">
             <img id="qrcodeImg">
         </div>
@@ -87,14 +84,12 @@
         });
     </script>
 
-
     <div id="vanish">
         <div class="daysremaining">
             <br>
             <h2 style="color: white;">27 Days Remaining</h2>
         </div>
     </div>
-
 
     <!-- ! my div yaay -->
     <div class="bgbg">
@@ -108,7 +103,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    {{#each edithistories.entry.action}}
+                        <td>{{entry}}</td>
+                        <td>{{timestamp}}</td>
+                        <td>{{action}}</td>
+                    {{/each}}
                 </tbody>
             </table>
         </div>
@@ -128,7 +127,6 @@
         if (event.target == bgbg) {
             bgbg.style.display = "none";
         }
-
     }
 
     function vanishMessage() {
@@ -136,12 +134,9 @@
         van.className = "show";
         setTimeout(function () { van.className = van.className.replace("show", ""); }, 3000);
     }
-
 </script>
 
 <script>
-
-
 
 </script>
 

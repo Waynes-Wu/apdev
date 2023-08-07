@@ -96,7 +96,7 @@ app.post("/login", async (req, res) => {
     }
 
     // User is authenticated
-    return res.redirect('index.html');
+    return res.redirect('index');
   } catch (error) {
     console.error('Error during login:', error);
     const errorMessage = "An error occurred during login. Please try again.";
@@ -158,7 +158,28 @@ const editHistorySchema = new mongoose.Schema({
 const Entry = mongoose.model('Entry', entrySchema);
 const EditHistory = mongoose.model('EditHistory', editHistorySchema);
 
+app.get('/index', async (req, res) => {
+  try {
+    console.log('Log-in successful!');
+    res.render('index');
+  } catch (error) {
+    console.error('Credentials ', error);
+    res.status(500).json({ error: 'An error occurred while fetching entries' });
+  }
+});
 
+app.get('/transcript', async (req, res) => {
+  try {
+    // fetches all entries from the database
+    const EditLog = await EditHistory.find({}).lean().exec();
+
+    // sends the entries data to the HTML page
+    res.render('transcript', { edithistories: EditLog });
+  } catch (error) {
+    console.error('Error fetching entries:', error);
+    res.status(500).json({ error: 'An error occurred while fetching entries' });
+  }
+});
 
 
 //needed multer stuff
@@ -316,9 +337,6 @@ app.get('/upload', (req, res) => {
   res.sendFile(path.join(__dirname, 'html', '/upload.html'));
 });
 
-// app.get('/archive', (req, res) => {
-//   res.render('archive'); 
-// });
 
 app.get('/qr', async (req, res) => {
 
