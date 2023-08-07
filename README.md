@@ -3,6 +3,7 @@
 E-Tabi is a storage-tracking application designed to help users keep track of their items placed inside or removed from their storage units. It offers several convenient features that aid in managing and organizing the storage process. From visualizing images and descriptions of stored items to monitoring rent due dates and maintaining a complete history of access, E-Tabi provides valuable tools for efficient storage management.
 
 Features:
+
 User Authentication:
 Secure user authentication and session management for accessing the application.
 User registration with unique email validation.
