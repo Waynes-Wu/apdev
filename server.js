@@ -106,7 +106,7 @@ app.post("/login", async (req, res) => {
     
     // User is authenticated and the session is stored
     req.session.userId = user._id;
-    console.log(req.session.userId);
+    // console.log(req.session.userId);
     return res.redirect('index');
   } catch (error) {
     console.error('Error during login:', error);
@@ -149,6 +149,7 @@ const entrySchema = new mongoose.Schema({
   }
 });
 
+entrySchema.index({ user: 1, name: 1 }, { unique: true });
 
 const editHistorySchema = new mongoose.Schema({
   action: {
@@ -242,6 +243,12 @@ app.post('/upload', upload.single('unit-image'), async (req, res) => {
 
     res.status(201).json({ message: 'Entry created successfully' });
   } catch (error) {
+
+    if (error.code === 11000) {
+      // Duplicate key error, an entry with the same name already exists
+      return res.status(409).json({ error: 'An entry with the same name already exists' });
+    }
+
     console.error('Error uploading entries:', error);
     res.status(500).json({ error: 'An error occurred while uploading an entry' });
   }
