@@ -6,6 +6,7 @@ const path = require("path");
 const multer = require('multer'); // for the image URLs
 const fs = require('fs'); // files
 const hbs = require('hbs');
+const session = require('express-session');
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -21,6 +22,13 @@ app.use(express.static('html', { index: 'login.html' }));
 
 //needed so that the images are visualized
 app.use('/uploads', express.static('uploads'));
+
+//for user sessions
+app.use(session({
+  secret: 'secret', 
+  resave: false,
+  saveUninitialized: true,
+}));
 
 // url to the database
 mongoose.connect('mongodb://127.0.0.1:27017/E-Tabi_DB')
@@ -95,7 +103,10 @@ app.post("/login", async (req, res) => {
       return res.redirect(`/login.html?error=${errorMessage}`);
     }
 
-    // User is authenticated
+    
+    // User is authenticated and the session is stored
+    req.session.userId = user._id;
+    console.log(req.session.userId);
     return res.redirect('index');
   } catch (error) {
     console.error('Error during login:', error);
@@ -109,7 +120,6 @@ const entrySchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true
   },
 
   date: {
@@ -130,8 +140,15 @@ const entrySchema = new mongoose.Schema({
   imageURL: {
     type: String,
     required: true
+  },
+
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   }
 });
+
 
 const editHistorySchema = new mongoose.Schema({
   action: {
@@ -139,11 +156,11 @@ const editHistorySchema = new mongoose.Schema({
     enum: ['edit', 'add', 'remove'],
     required: true,
   },
-  // user: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'User',
-  //   required: true,
-  // },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
   entry: {
     type: String,
     required: true,
@@ -159,13 +176,20 @@ const EditHistory = mongoose.model('EditHistory', editHistorySchema);
 
 app.get('/index', async (req, res) => {
   try {
+
+    if (!req.session.userId) {
+      // redirect to the login page if the user is not logged in
+      return res.redirect('/login.html');
+    }
+
+    const userId = req.session.userId;
     console.log('Log-in successful!');
 
-   // fetches all entries from the database
-   const EditLog = await EditHistory.find({}).lean().exec();
+    // fetches all entries from the database
+    const userEditHistory = await EditHistory.find({ user: userId }).lean().exec();
 
-   // sends the entries data to the HTML page
-   res.render('index', { edithistories: EditLog });
+    // sends the entries data to the HTML page
+    res.render('index', { edithistories: userEditHistory });
 
   } catch (error) {
     console.error('Error fetching entries: ', error);
@@ -196,13 +220,15 @@ app.post('/upload', upload.single('unit-image'), async (req, res) => {
     const { name, date, description, condition } = req.body;
 
     const imageURL = req.file.filename; // multer generates the file name and contains the path to the uploaded image
+    const userId = req.session.userId; //session
 
     const newEntry = new Entry({
       name,
       date,
       description,
       condition,
-      imageURL
+      imageURL,
+      user: userId
     });
 
     await newEntry.save();
@@ -210,24 +236,31 @@ app.post('/upload', upload.single('unit-image'), async (req, res) => {
     const newEditHistory = new EditHistory({
       action: 'add',
       entry: newEntry.name,
+      user: userId
     });
     await newEditHistory.save();
 
     res.status(201).json({ message: 'Entry created successfully' });
   } catch (error) {
-    console.error('Entry name already taken', error);
-    res.status(500).json({ error: 'There is already an entry with the existing name, change it' });
+    console.error('Error uploading entries:', error);
+    res.status(500).json({ error: 'An error occurred while uploading an entry' });
   }
 });
 
 //gets entries from the db
 app.get('/archive', async (req, res) => {
   try {
+
+    if (!req.session.userId) {
+      // redirect to the login page if the user is not logged in
+      return res.redirect('/login.html');
+    }
+    const userId = req.session.userId;
     // fetches all entries from the database
-    const allEntries = await Entry.find({}).lean().exec();
+    const userEntries = await Entry.find({ user: userId }).lean().exec();
 
     // sends the entries data to the HTML page
-    res.render('archive', { entries: allEntries });
+    res.render('archive', { entries: userEntries });
   } catch (error) {
     console.error('Error fetching entries:', error);
     res.status(500).json({ error: 'An error occurred while fetching entries' });
@@ -239,8 +272,9 @@ app.post('/update', upload.single('editImage'), async function (req, res) {
   try {
     const { editName, editDate, editDesc, editCond, idName } = req.body; // these need to match the form names
     const imageURL = req.file.filename;
+    const userId = req.session.userId;
 
-    const existingEntry = await Entry.findOne({ name: idName }).exec();
+    const existingEntry = await Entry.findOne({ name: idName, user: userId }).exec();
 
     if (!existingEntry) {
       return res.status(404).json({ error: `Entry with ID ${idName} not found` });
@@ -261,6 +295,7 @@ app.post('/update', upload.single('editImage'), async function (req, res) {
     const newEditHistory = new EditHistory({
       action: 'edit',
       entry: existingEntry.name,
+      user: userId
     });
     await newEditHistory.save();
 
@@ -277,8 +312,8 @@ app.post('/update', upload.single('editImage'), async function (req, res) {
 app.post('/delete', async (req, res) => {
   try {
     const { idName } = req.body;
-
-    const existingEntry = await Entry.findOne({ name: idName }).exec();
+    const userId = req.session.userId; // Get the authenticated user's ID from the session
+    const existingEntry = await Entry.findOne({ name: idName, user: userId }).exec();
 
     if (!existingEntry) {
       return res.status(404).json({ error: `Entry with ID ${idName} not found` });
@@ -294,6 +329,7 @@ app.post('/delete', async (req, res) => {
     const newEditHistory = new EditHistory({
       action: 'remove',
       entry: existingEntry.name,
+      user: userId
     });
     await newEditHistory.save();
 
