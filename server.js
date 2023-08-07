@@ -145,8 +145,7 @@ const editHistorySchema = new mongoose.Schema({
   //   required: true,
   // },
   entry: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Entry',
+    type: String,
     required: true,
   },
   timestamp: {
@@ -161,26 +160,18 @@ const EditHistory = mongoose.model('EditHistory', editHistorySchema);
 app.get('/index', async (req, res) => {
   try {
     console.log('Log-in successful!');
-    res.render('index');
+
+   // fetches all entries from the database
+   const EditLog = await EditHistory.find({}).lean().exec();
+
+   // sends the entries data to the HTML page
+   res.render('index', { edithistories: EditLog });
+
   } catch (error) {
-    console.error('Credentials ', error);
+    console.error('Error fetching entries: ', error);
     res.status(500).json({ error: 'An error occurred while fetching entries' });
   }
 });
-
-app.get('/transcript', async (req, res) => {
-  try {
-    // fetches all entries from the database
-    const EditLog = await EditHistory.find({}).lean().exec();
-
-    // sends the entries data to the HTML page
-    res.render('transcript', { edithistories: EditLog });
-  } catch (error) {
-    console.error('Error fetching entries:', error);
-    res.status(500).json({ error: 'An error occurred while fetching entries' });
-  }
-});
-
 
 //needed multer stuff
 const storage = multer.diskStorage({
@@ -218,7 +209,7 @@ app.post('/upload', upload.single('unit-image'), async (req, res) => {
 
     const newEditHistory = new EditHistory({
       action: 'add',
-      entry: newEntry._id,
+      entry: newEntry.name,
     });
     await newEditHistory.save();
 
@@ -269,7 +260,7 @@ app.post('/update', upload.single('editImage'), async function (req, res) {
     // ! history
     const newEditHistory = new EditHistory({
       action: 'edit',
-      entry: existingEntry._id,
+      entry: existingEntry.name,
     });
     await newEditHistory.save();
 
@@ -302,7 +293,7 @@ app.post('/delete', async (req, res) => {
     // ! history
     const newEditHistory = new EditHistory({
       action: 'remove',
-      entry: existingEntry._id,
+      entry: existingEntry.name,
     });
     await newEditHistory.save();
 

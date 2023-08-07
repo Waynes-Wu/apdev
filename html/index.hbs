@@ -103,10 +103,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{#each edithistories.entry.action}}
-                        <td>{{entry}}</td>
-                        <td>{{timestamp}}</td>
-                        <td>{{action}}</td>
+                    {{#each edithistories}}
+                        <tr>
+                            <td>{{entry}}</td>
+                            <td>{{formatDate timestamp}}</td>
+                            <td>{{action}}</td>
+                        </tr>
                     {{/each}}
                 </tbody>
             </table>
