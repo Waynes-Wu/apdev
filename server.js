@@ -51,6 +51,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true
+  },
+
+  qrCodeUrl: { //not required
+    type: String, 
+    default: '', 
   }
 });
 
@@ -371,14 +376,58 @@ app.get('/upload', (req, res) => {
   res.sendFile(path.join(__dirname, 'html', '/upload.html'));
 });
 
-
 app.get('/qr', async (req, res) => {
-
-  const stJson = JSON.stringify("gyg");
-  //const qrCodeFilePath = path.join(__dirname, "qrcodes", `${username}_qrcode.png`);
+  const dynamicData = req.query.data || 'gyg';
+  const stJson = JSON.stringify(dynamicData);
   const qrCodeDataUrl = await qrcode.toDataURL(stJson);
   res.json({ qrCodeDataUrl });
 });
+
+// New app.post route for saving the QR code as a file
+app.post('/save-qr', async (req, res) => {
+  try {
+    const { qrCodeDataUrl } = req.body;
+
+    if (!qrCodeDataUrl) {
+      res.status(400).json({ error: 'QR code data URL is missing in the request body' });
+      return;
+    }
+
+    // extract the data part from the data URL
+    const base64Data = qrCodeDataUrl.split(',')[1];
+
+    // convert the base64 data to a buffer
+    const qrCodeBuffer = Buffer.from(base64Data, 'base64');
+
+    // saves the qr code as a file
+    const userID = req.session.userId;
+    const timestamp = Date.now();
+    const fileName = `${timestamp}-${userID}.png`;
+    const filePath = path.join('qrcodes', fileName);
+    
+    const user = await User.findById(userID).exec();
+    //gets rid of the old one
+    const oldQRCode = path.join('qrcodes', user.qrCodeUrl);
+    fs.unlinkSync(oldQRCode);
+    //makes the new ones
+    user.qrCodeUrl = fileName;
+    await user.save();
+    
+    fs.writeFile(filePath, qrCodeBuffer, (err) => {
+      if (err) {
+        console.error('Error saving QR code:', err);
+        res.status(500).json({ error: 'Failed to save QR code' });
+      } else {
+        // responds with the file URL where the QR code is saved
+        res.json({ fileUrl: `/qrcodes/${fileName}` });
+      }
+    });
+  } catch (err) {
+    console.error('Error saving QR code:', err);
+    res.status(500).json({ error: 'Failed to save QR code' });
+  }
+});
+
 
 app.set('view engine', 'hbs');
 
