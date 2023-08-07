@@ -1,6 +1,10 @@
                          ## For this phase, the group is required to develop the back-end logic of the chosen web application. ##
-##  The README.md file at the root directory of the repository should contain instructions on how to set-up and to run the application locally through a Node.js server. ##
+##  E-Tabi Storage-Tracking Application ##
 
-This project is called E-tabi. Users will be able to add, edit, delete items in their storage units.
+E-Tabi is a storage-tracking application designed to help users keep track of their items placed inside or removed from their storage units. It offers several convenient features that aid in managing and organizing the storage process. From visualizing images and descriptions of stored items to monitoring rent due dates and maintaining a complete history of access, E-Tabi provides valuable tools for efficient storage management.
 
-Our project requires each user to have an account. Once they have an account, they will be able to add, edit, delete items from their storage units. It will also have a qr code generator which will be used to unlock the storage unit.
+#Features#
+View images and descriptions of stored items.
+Track days left before rent is due.
+Maintain a comprehensive history of unit access, including added and removed items.
+Generate alternative digital keys for accessing storage units.
