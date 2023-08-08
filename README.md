@@ -8,7 +8,7 @@ Track days left before rent is due. <br />
 Maintain a comprehensive history of unit access, including added and removed items. <br />
 Generate alternative digital keys for accessing storage units. <br />
 
-In order for the program to run via localhost:3000, the user must first install the prerequisite npm packages:
+In order for the program to run via localhost:3000, the user must first install the prerequisite npm packages via the project directory's terminal:
 
 ```npm install```
 
@@ -28,5 +28,5 @@ To edit, simply **press the edit button and click anywhere on the item you want 
  
 Logging of activity:
 
-Activities throughout the database will be presented upon clicking the **Transcript Records** button and a table weill pop-up baed on the database's activities.
+Activities throughout the database will be presented upon clicking the **Transcript Records** button and a table weill pop-up based on the database's activities.
 
